@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Id to CSV</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        min-width: 300px;
+        min-height: 600px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid #ddd;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      .container div {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      .container label {
+        align-self: flex-start;
+        margin-bottom: 10px;
+      }
+
+      .container textarea {
+        margin-bottom: 20px;
+      }
+
+      .container button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        align-self: center;
+        margin-top: 10px;
+      }
+
+      .container .button-container {
+        display: inline-block;
+        justify-content: space-between;
+        width: 80%;
+        padding: 0 15%;
+      }
+
+      .container .button-container button {
+        flex: 1;
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div>
+        <h3>Id to CSV</h3>
+
+        <div>
+          <label for="input">Please enter your Ids</label>
+          <textarea id="input" name="input" rows="10" cols="30"></textarea>
+        </div>
+        <div>
+          <label for="separator">Please enter your separator</label>
+          <select name="Seperator" id="seperator">
+            <option value="newline">New Line</option>
+            <option value="comma">Comma</option>
+            <option value="space">space</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="output">output</label>
+          <textarea
+            id="output"
+            name="output"
+            rows="10"
+            cols="30"
+            readonly
+          ></textarea>
+          <!-- copy the output button -->
+        </div>
+
+        <div>
+          <button id="convert">Convert</button>
+          <div class="button-container">
+            <button id="copy">Copy</button>
+            <button id="clear">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="./scripts.js"></script>
+</html>
