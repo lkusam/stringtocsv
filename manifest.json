@@ -12,7 +12,6 @@
       "js": ["scripts.js"]
     }
   ],
-  "permissions": ["activeTab"],
   "commands": {
     "_execute_action": {
       "suggested_key": {
