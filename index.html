@@ -3,96 +3,105 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>String to CSV Converter</title>
-    <link rel="stylesheet" href="styles.css" />
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <title>Id to CSV</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        background-color: #f0f0f0;
+        font-family: Arial, sans-serif;
+        min-width: 300px;
+        min-height: 600px;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid #ddd;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      .container div {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      .container label {
+        align-self: flex-start;
+        margin-bottom: 10px;
+      }
+
+      .container textarea {
+        margin-bottom: 20px;
+      }
+
+      .container button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        align-self: center;
+        margin-top: 10px;
+      }
+
+      .container .button-container {
+        display: inline-block;
+        justify-content: space-between;
+        width: 80%;
+        padding: 0 15%;
+      }
+
+      .container .button-container button {
+        flex: 1;
+        margin: 10px;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
-      <button id="close-btn" class="close-button" title="Close (Esc)">&times;</button>
-      <h1>String to CSV Converter</h1>
-      <div id="error-message" class="error-message hidden"></div>
+      <div>
+        <h3>Id to CSV</h3>
 
-      <div class="settings-section">
-        <h2>Settings</h2>
-        <div class="form-grid">
-          <div class="form-group inline-check theme-switcher">
-            <label class="switch">
-              <input type="checkbox" id="darkModeToggle" />
-              <span class="slider round"></span>
-            </label>
-            <i class="fas fa-sun theme-icon light-mode-icon"></i>
-            <i class="fas fa-moon theme-icon dark-mode-icon"></i>
-            <label for="darkModeToggle" class="inline-label">Dark Mode</label>
-          </div>
-          <div class="form-group inline-check">
-            <input type="checkbox" id="trimLines" name="trimLines" checked />
-            <label for="trimLines">Trim whitespace</label>
-          </div>
+        <div>
+          <label for="input">Please enter your Ids</label>
+          <textarea id="input" name="input" rows="10" cols="30"></textarea>
         </div>
-      </div>
-      <div class="form-group">
-        <div class="input-wrapper">
-          <i class="fas fa-keyboard input-icon"></i>
-          <label for="input">Input String</label>
-          <!-- Keep label for accessibility -->
-          <textarea id="input" name="input" rows="8" cols="30"></textarea>
+        <div>
+          <label for="separator">Please enter your separator</label>
+          <select name="Seperator" id="seperator">
+            <option value="newline">New Line</option>
+            <option value="comma">Comma</option>
+            <option value="space">space</option>
+          </select>
         </div>
-        <div id="input-counter" class="input-meta">Chars: 0, Lines: 0</div>
-      </div>
-      <div class="form-grid">
-        <div class="form-group">
-          <div class="input-wrapper">
-            <span id="separator-display-icon" class="input-icon"></span>
-            <label for="seperator">Separator</label>
-            <!-- Keep label for accessibility -->
-            <select name="Seperator" id="seperator">
-              <option value="newline">New Line</option>
-              <option value="comma">Comma</option>
-              <option value="space">Space</option>
-              <option value="custom">Custom...</option>
-            </select>
-          </div>
+
+        <div>
+          <label for="output">output</label>
+          <textarea
+            id="output"
+            name="output"
+            rows="10"
+            cols="30"
+            readonly
+          ></textarea>
+          <!-- copy the output button -->
         </div>
-        <div class="form-group">
-          <div class="input-wrapper">
-            <span id="quote-type-display-icon" class="input-icon"></span>
-            <label for="quoteType">Quote Type</label>
-            <!-- Keep label for accessibility -->
-            <select name="quoteType" id="quoteType">
-              <option value="single">Single Quotes ('')</option>
-              <option value="double">Double Quotes ("")</option>
-            </select>
+
+        <div>
+          <button id="convert">Convert</button>
+          <div class="button-container">
+            <button id="copy">Copy</button>
+            <button id="clear">Clear</button>
           </div>
         </div>
       </div>
-
-      <div class="form-group hidden" id="custom-separator-group">
-        <div class="input-wrapper">
-          <i class="fas fa-i-cursor input-icon"></i>
-          <!-- Keep Font Awesome for custom input -->
-          <label for="custom-separator-input">Custom Separator</label>
-          <input type="text" id="custom-separator-input" maxlength="5" placeholder="e.g. ; or |" />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <div class="input-wrapper">
-          <i class="fas fa-file-csv input-icon"></i>
-          <label for="output">CSV Output</label>
-          <!-- Keep label for accessibility -->
-          <textarea id="output" name="output" rows="8" cols="30" readonly></textarea>
-        </div>
-      </div>
-
-      <div class="actions">
-        <button id="copy">Copy</button>
-        <button id="clear" class="secondary">Clear</button>
-      </div>
-    </div>
-    <div id="loader" class="hidden">
-      <div class="loader-overlay"><div class="loader-spinner"></div></div>
     </div>
   </body>
   <script src="./scripts.js"></script>
