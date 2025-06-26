@@ -44,7 +44,18 @@ jobs:
           cd dist
           # Create a dummy file if directory is empty
           if [ -z "$(ls -A)" ]; then
-            echo '{"manifest_version":3,"name":"Extension","version":"1.0"}' > manifest.json
+            echo '{"manifest_version":3,"name":"Extension","version":"1.0.'$GITHUB_RUN_NUMBER'"}' > manifest.json
+          fi
+          
+          # Update version in existing manifest.json if it exists
+          if [ -f "manifest.json" ]; then
+            # Try to update version using jq if available
+            if command -v jq &> /dev/null; then
+              jq '.version = "1.0.'$GITHUB_RUN_NUMBER'"' manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json
+            else
+              # Fallback to sed if jq is not available
+              sed -i 's/"version": "[^"]*"/"version": "1.0.'$GITHUB_RUN_NUMBER'"/g' manifest.json
+            fi
           fi
           zip -r ../extension.zip .
 
