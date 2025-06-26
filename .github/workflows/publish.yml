@@ -1,10 +1,9 @@
-name: Publish to Chrome Web Store
+name: Publish Chrome Extension
 
 on:
   pull_request:
     types: [closed]
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   publish:
@@ -12,29 +11,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Setup Node
-        uses: actions/setup-node@v3
+      - uses: actions/setup-node@v3
         with:
           node-version: "18"
 
-      - name: Install dependencies and build
+      - name: Install & Build
         run: |
           npm ci
           npm run build
 
-      - name: Zip extension
+      - name: Package Extension
         run: |
           cd dist
-          zip -r ../extension.zip ./
+          zip -r ../extension.zip .
 
-      - name: Upload to Chrome Web Store
-        uses: w9jds/publish-chrome-extension@v3
+      - name: Upload & Publish
+        uses: mnao305/chrome-extension-upload@v5.0.0
         with:
-          client_id: ${{ secrets.CHROME_CLIENT_ID }}
-          client_secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-          refresh_token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          extension_id: ${{ secrets.CHROME_EXTENSION_ID }}
-          zip_file: "extension.zip"
+          file-path: extension.zip
+          extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
+          client-id: ${{ secrets.CHROME_CLIENT_ID }}
+          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+          publish: true
