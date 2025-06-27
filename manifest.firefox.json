@@ -1,0 +1,25 @@
+{
+  "manifest_version": 2,
+  "name": "String to CSV converter",
+  "version": "2.0",
+  "description": "Converts String into CSV",
+  "browser_action": {
+    "default_popup": "index.html"
+  },
+  "permissions": ["storage"],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "stringtocsv@yourdomain.com",
+      "strict_min_version": "57.0"
+    }
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+D",
+        "mac": "Command+Shift+D"
+      },
+      "description": "Opens String to CSV converter"
+    }
+  }
+}

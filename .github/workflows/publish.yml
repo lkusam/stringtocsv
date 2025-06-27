@@ -1,4 +1,4 @@
-name: Publish Chrome Extension
+name: Publish Browser Extensions
 
 on:
   workflow_dispatch:
@@ -41,36 +41,37 @@ jobs:
           npm install
           npm run build
 
-      - name: Package Extension
+      - name: Update Version Numbers
         run: |
-          mkdir -p dist
-          cd dist
-          # Create a dummy file if directory is empty
-          if [ -z "$(ls -A)" ]; then
-            echo '{"manifest_version":3,"name":"Extension","version":"1.0.'$GITHUB_RUN_NUMBER'"}' > manifest.json
+          # Update version in all manifest files
+          if command -v jq &> /dev/null; then
+            jq '.version = "1.0.'$GITHUB_RUN_NUMBER'"' manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json
+            jq '.version = "1.0.'$GITHUB_RUN_NUMBER'"' manifest.firefox.json > manifest.firefox.json.tmp && mv manifest.firefox.json.tmp manifest.firefox.json
+            jq '.version = "1.0.'$GITHUB_RUN_NUMBER'"' manifest.safari.json > manifest.safari.json.tmp && mv manifest.safari.json.tmp manifest.safari.json
+          else
+            # Fallback to sed if jq is not available
+            sed -i 's/"version": "[^"]*"/"version": "1.0.'$GITHUB_RUN_NUMBER'"/g' manifest.json
+            sed -i 's/"version": "[^"]*"/"version": "1.0.'$GITHUB_RUN_NUMBER'"/g' manifest.firefox.json
+            sed -i 's/"version": "[^"]*"/"version": "1.0.'$GITHUB_RUN_NUMBER'"/g' manifest.safari.json
           fi
           
-          # Update version in existing manifest.json if it exists
-          if [ -f "manifest.json" ]; then
-            # Try to update version using jq if available
-            if command -v jq &> /dev/null; then
-              jq '.version = "1.0.'$GITHUB_RUN_NUMBER'"' manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json
-            else
-              # Fallback to sed if jq is not available
-              sed -i 's/"version": "[^"]*"/"version": "1.0.'$GITHUB_RUN_NUMBER'"/g' manifest.json
-            fi
-          fi
-          zip -r ../extension.zip .
+      - name: Package Extensions
+        run: |
+          chmod +x ./build.sh
+          ./build.sh
 
-      - name: Upload & Publish
+      - name: Upload & Publish Chrome Extension
         uses: mnao305/chrome-extension-upload@v5.0.0
         with:
-          file-path: extension.zip
+          file-path: extension-chrome.zip
           extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
           client-id: ${{ secrets.CHROME_CLIENT_ID }}
           client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
           refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
           publish: true
+          
+      # Firefox publishing requires manual upload or a custom script
+      # Safari publishing requires Apple Developer account and additional steps
           
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
@@ -79,4 +80,7 @@ jobs:
           name: Release v${{ github.run_number }}
           draft: false
           prerelease: false
-          files: extension.zip
+          files: |
+            extension-chrome.zip
+            extension-firefox.zip
+            extension-safari.zip
