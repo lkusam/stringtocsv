@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "String to CSV converter",
   "version": "2.0",
-  "description": "Converts String into CSV",
+  "description": "Converts String into CSV in a zif",
   "action": {
     "default_popup": "index.html"
   },

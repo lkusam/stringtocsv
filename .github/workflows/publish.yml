@@ -29,17 +29,24 @@ jobs:
           else
             echo "package_exists=false" >> $GITHUB_OUTPUT
           fi
-          
+
       - name: Create basic package.json if missing
         if: steps.check_files.outputs.package_exists == 'false'
         run: |
           echo '{"name":"chrome-extension","version":"1.0.0","scripts":{"build":"mkdir -p dist"}}' > package.json
           mkdir -p dist
-          
+
       - name: Install & Build
         run: |
           npm install
           npm run build
+
+      - name: Extract version from package.json
+        id: package_version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Using version: $VERSION"
 
       - name: Package Extension
         run: |
@@ -47,17 +54,17 @@ jobs:
           cd dist
           # Create a dummy file if directory is empty
           if [ -z "$(ls -A)" ]; then
-            echo '{"manifest_version":3,"name":"Extension","version":"1.0.'$GITHUB_RUN_NUMBER'"}' > manifest.json
+            echo '{"manifest_version":3,"name":"Extension","version":"'${{ steps.package_version.outputs.version }}'"}' > manifest.json
           fi
-          
+
           # Update version in existing manifest.json if it exists
           if [ -f "manifest.json" ]; then
             # Try to update version using jq if available
             if command -v jq &> /dev/null; then
-              jq '.version = "1.0.'$GITHUB_RUN_NUMBER'"' manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json
+              jq '.version = "'${{ steps.package_version.outputs.version }}'"' manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json
             else
               # Fallback to sed if jq is not available
-              sed -i 's/"version": "[^"]*"/"version": "1.0.'$GITHUB_RUN_NUMBER'"/g' manifest.json
+              sed -i 's/"version": "[^"]*"/"version": "'${{ steps.package_version.outputs.version }}'"/g' manifest.json
             fi
           fi
           zip -r ../extension.zip .
@@ -71,12 +78,12 @@ jobs:
           client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
           refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
           publish: true
-          
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ github.run_number }}
-          name: Release v${{ github.run_number }}
+          tag_name: v${{ steps.package_version.outputs.version }}
+          name: Release v${{ steps.package_version.outputs.version }}
           draft: false
           prerelease: false
           files: extension.zip
