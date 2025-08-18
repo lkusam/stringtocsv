@@ -19,6 +19,34 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeButton = document.getElementById("close-btn");
   const copyButton = document.getElementById("copy");
   const clearButton = document.getElementById("clear");
+  const settingsButton = document.getElementById("settings-btn");
+  const settingsSection = document.getElementById("settings-section");
+  const closeSettingsButton = document.getElementById("close-settings-btn");
+  const collapsibleHeader = document.getElementById("collapsible-header");
+  const collapsibleContent = document.querySelector(".collapsible-content");
+  const advancedOptionsHeader = document.getElementById("advanced-options-header");
+  const advancedOptionsContent = document.querySelector("#advanced-options-section .collapsible-content");
+  const conversionOptionsHeader = document.getElementById("conversion-options-header");
+  const conversionOptionsContent = document.querySelector("#conversion-options-section .collapsible-content");
+
+  if (conversionOptionsHeader && conversionOptionsContent) {
+    // Set initial chevron state based on content visibility
+    const chevronIcon = conversionOptionsHeader.querySelector("i");
+    if (chevronIcon) {
+      chevronIcon.className = conversionOptionsContent.classList.contains("hidden") ? "fas fa-chevron-down" : "fas fa-chevron-up";
+    }
+
+    conversionOptionsHeader.addEventListener("click", () => {
+      const isExpanded = conversionOptionsContent.classList.contains("hidden");
+      conversionOptionsContent.classList.toggle("hidden", !isExpanded);
+
+      if (chevronIcon) {
+        chevronIcon.className = isExpanded ? "fas fa-chevron-up" : "fas fa-chevron-down";
+      }
+    });
+  } else {
+    console.error("Conversion Options elements not found.");
+  }
 
   let conversionWorker;
   const MAX_INPUT_LENGTH = 15_000_000; // 15 million characters
@@ -260,30 +288,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateSeparatorDisplayIcon() {
     const selected = separatorElement.value;
-    let iconChar = '';
-    if (selected === 'newline') iconChar = '↵'; // Unicode for newline symbol
-    else if (selected === 'comma') iconChar = ',';
-    else if (selected === 'space') iconChar = '␣'; // Unicode for space symbol
-    else if (selected === 'custom') iconChar = customSeparatorInput.value || '...'; // Show custom value or ellipsis
+    let iconChar = "";
+    if (selected === "newline") iconChar = "↵"; // Unicode for newline symbol
+    else if (selected === "comma") iconChar = ",";
+    else if (selected === "space") iconChar = "␣"; // Unicode for space symbol
+    else if (selected === "custom") iconChar = customSeparatorInput.value || "..."; // Show custom value or ellipsis
     separatorDisplayIcon.textContent = iconChar;
 
     // Hide the label text if an icon is displayed
     if (iconChar) {
-      separatorLabel.classList.add('visually-hidden');
+      separatorLabel.classList.add("visually-hidden");
     } else {
-      separatorLabel.classList.remove('visually-hidden');
+      separatorLabel.classList.remove("visually-hidden");
     }
   }
 
   function updateQuoteTypeDisplayIcon() {
     const selected = quoteTypeElement.value;
-    let iconChar = '';
-    if (selected === 'single') iconChar = "'";
-    else if (selected === 'double') iconChar = '"';
+    let iconChar = "";
+    if (selected === "single") iconChar = "'";
+    else if (selected === "double") iconChar = '"';
     quoteTypeDisplayIcon.textContent = iconChar;
 
     // Hide the label text if an icon is displayed
-    quoteTypeLabel.classList.add('visually-hidden'); // Always hide as there's always an icon
+    quoteTypeLabel.classList.add("visually-hidden"); // Always hide as there's always an icon
   }
 
   function handleSettingChangeAndSave() {
@@ -295,6 +323,42 @@ document.addEventListener("DOMContentLoaded", function () {
   closeButton.addEventListener("click", () => window.close());
   copyButton.addEventListener("click", copyToClipboard);
   clearButton.addEventListener("click", clearOutput);
+
+  settingsButton.addEventListener("click", () => {
+    settingsSection.classList.toggle("hidden");
+  });
+
+  closeSettingsButton.addEventListener("click", () => {
+    settingsSection.classList.add("hidden");
+  });
+
+  // Collapsible behavior for advanced options
+  advancedOptionsHeader.addEventListener("click", () => {
+    const isExpanded = !advancedOptionsContent.classList.contains("hidden");
+    advancedOptionsContent.classList.toggle("hidden", isExpanded);
+    advancedOptionsHeader.querySelector("i").classList.toggle("fa-chevron-down", isExpanded);
+    advancedOptionsHeader.querySelector("i").classList.toggle("fa-chevron-up", !isExpanded);
+  });
+
+  // Collapsible behavior for conversion options
+  if (conversionOptionsHeader && conversionOptionsContent) {
+    // Set initial chevron state based on content visibility
+    const chevronIcon = conversionOptionsHeader.querySelector("i");
+    if (chevronIcon) {
+      chevronIcon.className = conversionOptionsContent.classList.contains("hidden") ? "fas fa-chevron-down" : "fas fa-chevron-up";
+    }
+
+    conversionOptionsHeader.addEventListener("click", () => {
+      const isExpanded = conversionOptionsContent.classList.contains("hidden");
+      conversionOptionsContent.classList.toggle("hidden", !isExpanded);
+
+      if (chevronIcon) {
+        chevronIcon.className = isExpanded ? "fas fa-chevron-up" : "fas fa-chevron-down";
+      }
+    });
+  } else {
+    console.error("Conversion Options elements not found.");
+  }
 
   // Live conversion: Update output when input text or settings change.
   inputElement.addEventListener("input", () => {
@@ -319,8 +383,14 @@ document.addEventListener("DOMContentLoaded", function () {
     updateQuoteTypeDisplayIcon();
     handleSettingChangeAndSave();
   });
-  customSeparatorInput.addEventListener("input", () => { console.log("Custom separator input detected."); handleSettingChangeAndSave(); });
-  trimLinesCheckbox.addEventListener("change", () => { console.log("Trim lines checkbox change detected."); handleSettingChangeAndSave(); });
+  customSeparatorInput.addEventListener("input", () => {
+    console.log("Custom separator input detected.");
+    handleSettingChangeAndSave();
+  });
+  trimLinesCheckbox.addEventListener("change", () => {
+    console.log("Trim lines checkbox change detected.");
+    handleSettingChangeAndSave();
+  });
 
   // Add event listener for dark mode toggle
   darkModeToggle.addEventListener("change", () => {

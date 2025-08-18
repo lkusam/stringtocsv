@@ -11,10 +11,14 @@
   <body>
     <div class="container">
       <button id="close-btn" class="close-button" title="Close (Esc)">&times;</button>
-      <h1>String to CSV Converter</h1>
+      <div class="header-container">
+        <button id="settings-btn" class="settings-button" title="Settings"><i class="fas fa-cog"></i></button>
+        <h1>String to CSV Converter</h1>
+      </div>
       <div id="error-message" class="error-message hidden"></div>
 
-      <div class="settings-section">
+      <div id="settings-section" class="settings-section hidden">
+        <button id="close-settings-btn" class="close-button" title="Close Settings">&times;</button>
         <h2>Settings</h2>
         <div class="form-grid">
           <div class="form-group inline-check theme-switcher">
@@ -41,40 +45,50 @@
         </div>
         <div id="input-counter" class="input-meta">Chars: 0, Lines: 0</div>
       </div>
-      <div class="form-grid">
-        <div class="form-group">
-          <div class="input-wrapper">
-            <span id="separator-display-icon" class="input-icon"></span>
-            <label for="seperator">Separator</label>
-            <!-- Keep label for accessibility -->
-            <select name="Seperator" id="seperator">
-              <option value="newline">New Line</option>
-              <option value="comma">Comma</option>
-              <option value="space">Space</option>
-              <option value="custom">Custom...</option>
-            </select>
-          </div>
+
+      <div class="collapsible-section" id="conversion-options-section">
+        <div class="collapsible-header" id="conversion-options-header">
+          <span>Conversion Options</span>
+          <i class="fas fa-chevron-down"></i>
         </div>
-        <div class="form-group">
-          <div class="input-wrapper">
-            <span id="quote-type-display-icon" class="input-icon"></span>
-            <label for="quoteType">Quote Type</label>
-            <!-- Keep label for accessibility -->
-            <select name="quoteType" id="quoteType">
-              <option value="single">Single Quotes ('')</option>
-              <option value="double">Double Quotes ("")</option>
-            </select>
+        <div class="collapsible-content hidden">
+          <div class="form-grid">
+            <div class="form-group">
+              <div class="input-wrapper">
+                <span id="separator-display-icon" class="input-icon"></span>
+                <label for="seperator">Separator</label>
+                <select name="Seperator" id="seperator">
+                  <option value="newline">New Line</option>
+                  <option value="comma">Comma</option>
+                  <option value="space">Space</option>
+                  <option value="custom">Custom...</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-wrapper">
+                <span id="quote-type-display-icon" class="input-icon"></span>
+                <label for="quoteType">Quote Type</label>
+                <select name="quoteType" id="quoteType">
+                  <option value="single">Single Quotes ('')</option>
+                  <option value="double">Double Quotes ("")</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-group hidden" id="custom-separator-group">
+            <div class="input-wrapper">
+              <i class="fas fa-i-cursor input-icon"></i>
+              <label for="custom-separator-input">Custom Separator</label>
+              <input type="text" id="custom-separator-input" maxlength="5" placeholder="e.g. ; or |" />
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="form-group hidden" id="custom-separator-group">
-        <div class="input-wrapper">
-          <i class="fas fa-i-cursor input-icon"></i>
-          <!-- Keep Font Awesome for custom input -->
-          <label for="custom-separator-input">Custom Separator</label>
-          <input type="text" id="custom-separator-input" maxlength="5" placeholder="e.g. ; or |" />
-        </div>
+      <div class="actions">
+        <button id="copy">Copy</button>
+        <button id="clear" class="secondary">Clear</button>
       </div>
 
       <div class="form-group">
@@ -84,11 +98,6 @@
           <!-- Keep label for accessibility -->
           <textarea id="output" name="output" rows="8" cols="30" readonly></textarea>
         </div>
-      </div>
-
-      <div class="actions">
-        <button id="copy">Copy</button>
-        <button id="clear" class="secondary">Clear</button>
       </div>
     </div>
     <div id="loader" class="hidden">

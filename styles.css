@@ -47,12 +47,29 @@ body {
   padding: 20px;
 }
 
+.header-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
 h1 {
   font-size: 1.25rem;
   color: var(--text-color);
   text-align: center;
-  margin-top: 0;
-  margin-bottom: 24px;
+  margin: 0;
+}
+
+.settings-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+  margin-right: 15px;
 }
 
 .close-button {
@@ -113,7 +130,9 @@ label {
 }
 
 /* Adjust padding for inputs/selects based on icon position */
-textarea, select, input[type="text"] {
+textarea,
+select,
+input[type="text"] {
   /* Default padding for inputs with left-aligned icons */
   padding-left: 35px !important;
   padding-right: 12px !important; /* Ensure right padding is default */
@@ -167,6 +186,16 @@ textarea {
   padding: 15px 20px;
   margin-bottom: 20px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for elevation */
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  transform: translateY(-10px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.settings-section:not(.hidden) {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
 }
 
 .settings-section h2 {
@@ -290,7 +319,7 @@ label.inline-label {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 8px;
+  margin-bottom: 16px; /* Add margin to separate from output */
 }
 
 button {
@@ -329,6 +358,82 @@ button#clear:hover {
   background-color: var(--secondary-hover);
 }
 
+/* --- Updated Collapsible Section Styling --- */
+.collapsible-section {
+  background-color: var(--container-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  box-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-align: left;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.collapsible-header:hover {
+  color: var(--primary-color);
+  background-color: rgba(0, 123, 255, 0.1); /* Subtle background for better visibility */
+}
+
+body.dark-mode .collapsible-header {
+  color: var(--label-color);
+}
+
+body.dark-mode .collapsible-header:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle background for better visibility */
+}
+
+.collapsible-header i {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.collapsible-header i.fa-chevron-down {
+  transform: rotate(0deg);
+}
+
+.collapsible-header i.fa-chevron-up {
+  transform: rotate(180deg);
+}
+
+.collapsible-content {
+  padding: 8px;
+  display: none;
+  background-color: var(--container-bg);
+  color: var(--text-color);
+}
+
+.collapsible-content.hidden {
+  display: none;
+}
+
+.collapsible-content:not(.hidden) {
+  display: block;
+}
+
+/* Adjust button size and spacing */
+.actions button {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
 /* Icon visibility based on dark mode */
 body:not(.dark-mode) .theme-switcher .dark-mode-icon {
   display: none;
@@ -337,7 +442,6 @@ body:not(.dark-mode) .theme-switcher .dark-mode-icon {
 body.dark-mode .theme-switcher .light-mode-icon {
   display: none;
 }
-
 
 /* Slider specific styles */
 input:checked + .slider {
@@ -390,4 +494,54 @@ input:checked + .slider:before {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* --- Collapsible Section Styling --- */
+.collapsible-section {
+  background-color: var(--container-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.collapsible-header:hover {
+  background-color: var(--primary-hover);
+}
+
+.collapsible-header i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.collapsible-content {
+  padding: 15px;
+  display: none;
+  background-color: var(--container-bg);
+  color: var(--text-color);
+}
+
+.collapsible-content.hidden {
+  display: none;
+}
+
+.collapsible-content:not(.hidden) {
+  display: block;
 }
