@@ -10,6 +10,7 @@
   </head>
   <body>
     <div class="container">
+      <div class="resize-handle" id="resize-handle" title="Drag to resize"></div>
       <button id="close-btn" class="close-button" title="Close (Esc)">&times;</button>
       <div class="header-container">
         <button id="settings-btn" class="settings-button" title="Settings"><i class="fas fa-cog"></i></button>
@@ -18,21 +19,32 @@
       <div id="error-message" class="error-message hidden"></div>
 
       <div id="settings-section" class="settings-section hidden">
-        <button id="close-settings-btn" class="close-button" title="Close Settings">&times;</button>
+        <button id="close-settings-btn" class="close-button-right" title="Close Settings">&times;</button>
         <h2>Settings</h2>
-        <div class="form-grid">
-          <div class="form-group inline-check theme-switcher">
-            <label class="switch">
-              <input type="checkbox" id="darkModeToggle" />
-              <span class="slider round"></span>
-            </label>
-            <i class="fas fa-sun theme-icon light-mode-icon"></i>
-            <i class="fas fa-moon theme-icon dark-mode-icon"></i>
-            <label for="darkModeToggle" class="inline-label">Dark Mode</label>
+        <div class="settings-layout">
+          <div class="settings-row">
+            <div class="form-group inline-check theme-switcher">
+              <label class="switch">
+                <input type="checkbox" id="darkModeToggle" />
+                <span class="slider round"></span>
+              </label>
+              <i class="fas fa-sun theme-icon light-mode-icon"></i>
+              <i class="fas fa-moon theme-icon dark-mode-icon"></i>
+              <label for="darkModeToggle" class="inline-label">Dark Mode</label>
+            </div>
+            <div class="form-group inline-check">
+              <input type="checkbox" id="trimLines" name="trimLines" checked />
+              <label for="trimLines">Trim whitespace</label>
+            </div>
           </div>
-          <div class="form-group inline-check">
-            <input type="checkbox" id="trimLines" name="trimLines" checked />
-            <label for="trimLines">Trim whitespace</label>
+          <div class="form-group theme-row">
+            <div class="input-wrapper theme-selector">
+              <label for="themeSelect">Theme</label>
+              <select id="themeSelect" name="themeSelect">
+                <option value="classic">Classic</option>
+                <option value="material">Material UI</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -86,16 +98,16 @@
         </div>
       </div>
 
-      <div class="actions">
-        <button id="copy">Copy</button>
-        <button id="clear" class="secondary">Clear</button>
-      </div>
-
       <div class="form-group">
+        <div class="output-header">
+          <label for="output">CSV Output</label>
+          <div class="actions">
+            <button id="copy">Copy</button>
+            <button id="clear" class="secondary">Clear</button>
+          </div>
+        </div>
         <div class="input-wrapper">
           <i class="fas fa-file-csv input-icon"></i>
-          <label for="output">CSV Output</label>
-          <!-- Keep label for accessibility -->
           <textarea id="output" name="output" rows="8" cols="30" readonly></textarea>
         </div>
       </div>
