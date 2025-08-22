@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test CSV Converter</title>
+  </head>
+  <body>
+    <h1>Test CSV Converter</h1>
+    <textarea id="input" placeholder="Enter text here...">
+apple
+banana
+cherry</textarea
+    >
+    <br /><br />
+    <button onclick="testConvert()">Convert</button>
+    <br /><br />
+    <textarea id="output" readonly></textarea>
+
+    <script>
+      function testConvert() {
+        const input = document.getElementById("input").value;
+        const output = document.getElementById("output");
+
+        // Simple conversion logic
+        const result = input
+          .split("\n")
+          .map((item) => item.trim())
+          .filter((item) => item)
+          .map((item) => `'${item}'`)
+          .join(",\n");
+
+        output.value = result;
+      }
+    </script>
+  </body>
+</html>

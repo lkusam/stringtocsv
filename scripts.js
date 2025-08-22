@@ -19,6 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const closeButton = document.getElementById("close-btn");
   const copyButton = document.getElementById("copy");
   const clearButton = document.getElementById("clear");
+  const settingsButton = document.getElementById("settings-btn");
+  const settingsSection = document.getElementById("settings-section");
+  const closeSettingsButton = document.getElementById("close-settings-btn");
+  const conversionOptionsHeader = document.getElementById("conversion-options-header");
+  const conversionOptionsContent = document.querySelector("#conversion-options-section .collapsible-content");
+  const themeSelect = document.getElementById("themeSelect");
+  const resizeHandle = document.getElementById("resize-handle");
 
   let conversionWorker;
   const MAX_INPUT_LENGTH = 15_000_000; // 15 million characters
@@ -64,19 +71,18 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Handles the conversion logic by offloading it to a Web Worker.
+   * Handles the conversion logic directly (simplified without worker for debugging).
    */
-  const handleConvert = debounce(() => {
+  function handleConvert() {
     console.log("handleConvert (debounced) triggered.");
     // Guard against running conversion during initialization
-    if (!isInitialized) return;
+    if (!isInitialized) {
+      console.log("Conversion skipped - not initialized yet");
+      return;
+    }
 
     hideError();
     const inputString = inputElement.value;
-
-    if (inputString.length > MAX_INPUT_LENGTH) {
-      showError(`Input is too large (>${MAX_INPUT_LENGTH / 1_000_000}M chars). Processing may be slow.`);
-    }
 
     if (!inputString) {
       outputElement.value = "";
@@ -97,42 +103,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const quoteChar = selectedQuoteType === "double" ? '"' : "'";
 
-    console.log("Calling showLoader() for conversion.");
-    showLoader();
+    console.log("Converting with separator:", separator, "quote:", quoteChar);
 
-    // Terminate any existing worker before starting a new one
-    if (conversionWorker) {
-      conversionWorker.terminate();
+    try {
+      // Direct conversion without worker for debugging
+      const result = inputString
+        .split(separator)
+        .map((item) => (shouldTrim ? item.trim() : item))
+        .filter((item) => item) // Filter out empty strings
+        .map((item) => `${quoteChar}${item}${quoteChar}`)
+        .join(",\n");
+
+      outputElement.value = result;
+      console.log("Conversion successful, output length:", result.length);
+    } catch (error) {
+      showError(`Conversion failed: ${error.message}`);
+      console.error("Conversion error:", error);
     }
-
-    conversionWorker = new Worker("worker.js");
-
-    conversionWorker.onmessage = (e) => {
-      console.log("Worker message received:", e.data);
-      if (e.data && e.data.error) {
-        showError(`Conversion failed: ${e.data.error}`);
-        console.error("Worker reported error:", e.data.error);
-      } else {
-        outputElement.value = e.data;
-      }
-      console.log("Calling hideLoader() from worker.onmessage.");
-      hideLoader();
-    };
-
-    conversionWorker.onerror = (e) => {
-      showError("An error occurred during conversion.");
-      console.error("Worker Error:", e);
-      hideLoader();
-      console.log("Calling hideLoader() from worker.onerror.");
-    };
-
-    conversionWorker.postMessage({
-      inputString,
-      separator,
-      quoteChar,
-      shouldTrim,
-    });
-  }, 300); // 300ms debounce delay
+  }
 
   /**
    * Clears the input and output textareas.
@@ -183,7 +171,8 @@ document.addEventListener("DOMContentLoaded", function () {
       quoteType: quoteTypeElement.value,
       customSeparator: customSeparatorInput.value,
       trimLines: trimLinesCheckbox.checked,
-      darkMode: darkModeToggle.checked, // Save dark mode state
+      darkMode: darkModeToggle.checked,
+      theme: themeSelect.value, // Save theme selection
     };
     chrome.storage.sync.set({ settings }, () => {
       if (chrome.runtime.lastError) {
@@ -200,7 +189,8 @@ document.addEventListener("DOMContentLoaded", function () {
       quoteType: "single",
       customSeparator: "",
       trimLines: true,
-      darkMode: false, // Default to light mode
+      darkMode: false,
+      theme: "classic", // Default to classic theme
     };
 
     const applySettings = (settings) => {
@@ -210,10 +200,11 @@ document.addEventListener("DOMContentLoaded", function () {
       quoteTypeElement.value = settings.quoteType;
       customSeparatorInput.value = settings.customSeparator;
       trimLinesCheckbox.checked = settings.trimLines;
-      darkModeToggle.checked = settings.darkMode; // Set toggle state
+      darkModeToggle.checked = settings.darkMode;
+      themeSelect.value = settings.theme;
 
-      // Apply dark mode class immediately
-      document.body.classList.toggle("dark-mode", settings.darkMode);
+      // Apply theme and dark mode classes immediately
+      applyTheme(settings.theme, settings.darkMode);
 
       // After applying settings, update all dependent UI elements
       updateCustomSeparatorVisibility();
@@ -226,7 +217,12 @@ document.addEventListener("DOMContentLoaded", function () {
       // ensuring any stray startup events (like autofill) are ignored.
       setTimeout(() => {
         isInitialized = true;
-        console.log("isInitialized set to true.");
+        console.log("isInitialized set to true. Ready for conversions.");
+        // Test conversion immediately if there's input
+        if (inputElement.value) {
+          console.log("Found existing input, triggering conversion");
+          handleConvert();
+        }
       }, 50);
     };
 
@@ -260,30 +256,43 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function updateSeparatorDisplayIcon() {
     const selected = separatorElement.value;
-    let iconChar = '';
-    if (selected === 'newline') iconChar = '↵'; // Unicode for newline symbol
-    else if (selected === 'comma') iconChar = ',';
-    else if (selected === 'space') iconChar = '␣'; // Unicode for space symbol
-    else if (selected === 'custom') iconChar = customSeparatorInput.value || '...'; // Show custom value or ellipsis
+    let iconChar = "";
+    if (selected === "newline") iconChar = "↵"; // Unicode for newline symbol
+    else if (selected === "comma") iconChar = ",";
+    else if (selected === "space") iconChar = "␣"; // Unicode for space symbol
+    else if (selected === "custom") iconChar = customSeparatorInput.value || "..."; // Show custom value or ellipsis
     separatorDisplayIcon.textContent = iconChar;
 
     // Hide the label text if an icon is displayed
     if (iconChar) {
-      separatorLabel.classList.add('visually-hidden');
+      separatorLabel.classList.add("visually-hidden");
     } else {
-      separatorLabel.classList.remove('visually-hidden');
+      separatorLabel.classList.remove("visually-hidden");
     }
   }
 
   function updateQuoteTypeDisplayIcon() {
     const selected = quoteTypeElement.value;
-    let iconChar = '';
-    if (selected === 'single') iconChar = "'";
-    else if (selected === 'double') iconChar = '"';
+    let iconChar = "";
+    if (selected === "single") iconChar = "'";
+    else if (selected === "double") iconChar = '"';
     quoteTypeDisplayIcon.textContent = iconChar;
 
     // Hide the label text if an icon is displayed
-    quoteTypeLabel.classList.add('visually-hidden'); // Always hide as there's always an icon
+    quoteTypeLabel.classList.add("visually-hidden"); // Always hide as there's always an icon
+  }
+
+  function applyTheme(theme, darkMode) {
+    // Remove existing theme classes
+    document.body.classList.remove("material-theme");
+
+    // Apply theme class
+    if (theme === "material") {
+      document.body.classList.add("material-theme");
+    }
+
+    // Apply dark mode
+    document.body.classList.toggle("dark-mode", darkMode);
   }
 
   function handleSettingChangeAndSave() {
@@ -296,11 +305,52 @@ document.addEventListener("DOMContentLoaded", function () {
   copyButton.addEventListener("click", copyToClipboard);
   clearButton.addEventListener("click", clearOutput);
 
+  // Settings panel toggle
+  settingsButton.addEventListener("click", () => {
+    settingsSection.classList.toggle("hidden");
+  });
+
+  closeSettingsButton.addEventListener("click", () => {
+    settingsSection.classList.add("hidden");
+  });
+
+  // Collapsible behavior for conversion options
+  if (conversionOptionsHeader && conversionOptionsContent) {
+    const chevronIcon = conversionOptionsHeader.querySelector("i");
+
+    // Set initial chevron state based on content visibility
+    if (chevronIcon) {
+      const isInitiallyHidden = conversionOptionsContent.classList.contains("hidden");
+      chevronIcon.className = isInitiallyHidden ? "fas fa-chevron-down" : "fas fa-chevron-up";
+    }
+
+    conversionOptionsHeader.addEventListener("click", () => {
+      const isCurrentlyHidden = conversionOptionsContent.classList.contains("hidden");
+
+      // Toggle the content visibility
+      conversionOptionsContent.classList.toggle("hidden");
+
+      // Update chevron icon based on new state
+      if (chevronIcon) {
+        if (isCurrentlyHidden) {
+          // Content was hidden, now showing - chevron should point up
+          chevronIcon.className = "fas fa-chevron-up";
+        } else {
+          // Content was showing, now hidden - chevron should point down
+          chevronIcon.className = "fas fa-chevron-down";
+        }
+      }
+    });
+  }
+
+  // Create debounced version for input events
+  const debouncedHandleConvert = debounce(handleConvert, 300);
+
   // Live conversion: Update output when input text or settings change.
   inputElement.addEventListener("input", () => {
+    console.log("Input event detected, value:", inputElement.value);
     updateInputCounter();
-    console.log("Input event detected.");
-    handleConvert();
+    debouncedHandleConvert();
     saveOptions(); // Save input text as well
   });
 
@@ -319,16 +369,136 @@ document.addEventListener("DOMContentLoaded", function () {
     updateQuoteTypeDisplayIcon();
     handleSettingChangeAndSave();
   });
-  customSeparatorInput.addEventListener("input", () => { console.log("Custom separator input detected."); handleSettingChangeAndSave(); });
-  trimLinesCheckbox.addEventListener("change", () => { console.log("Trim lines checkbox change detected."); handleSettingChangeAndSave(); });
+  customSeparatorInput.addEventListener("input", () => {
+    console.log("Custom separator input detected.");
+    handleSettingChangeAndSave();
+  });
+  trimLinesCheckbox.addEventListener("change", () => {
+    console.log("Trim lines checkbox change detected.");
+    handleSettingChangeAndSave();
+  });
 
   // Add event listener for dark mode toggle
   darkModeToggle.addEventListener("change", () => {
     console.log("Dark mode toggle change detected.");
-    document.body.classList.toggle("dark-mode", darkModeToggle.checked);
+    applyTheme(themeSelect.value, darkModeToggle.checked);
     saveOptions();
   });
 
-  // Load saved options on startup
+  // Add event listener for theme selection
+  themeSelect.addEventListener("change", () => {
+    console.log("Theme change detected:", themeSelect.value);
+    applyTheme(themeSelect.value, darkModeToggle.checked);
+    saveOptions();
+  });
+
+  // Resize functionality
+  let isResizing = false;
+  let startX, startY, startWidth, startHeight;
+
+  resizeHandle.addEventListener("mousedown", (e) => {
+    isResizing = true;
+    startX = e.clientX;
+    startY = e.clientY;
+    startWidth = parseInt(document.defaultView.getComputedStyle(document.body).width, 10);
+    startHeight = parseInt(document.defaultView.getComputedStyle(document.body).height, 10);
+
+    document.addEventListener("mousemove", handleResize);
+    document.addEventListener("mouseup", stopResize);
+    e.preventDefault();
+  });
+
+  function handleResize(e) {
+    if (!isResizing) return;
+
+    const width = startWidth + e.clientX - startX;
+    const height = startHeight + e.clientY - startY;
+
+    // Set minimum dimensions
+    const minWidth = 350;
+    const minHeight = 400;
+    const maxWidth = 800;
+    const maxHeight = 1000;
+
+    const newWidth = Math.max(minWidth, Math.min(maxWidth, width));
+    const newHeight = Math.max(minHeight, Math.min(maxHeight, height));
+
+    document.body.style.width = newWidth + "px";
+    document.body.style.height = newHeight + "px";
+
+    // Save the new dimensions
+    saveWindowSize(newWidth, newHeight);
+  }
+
+  function stopResize() {
+    isResizing = false;
+    document.removeEventListener("mousemove", handleResize);
+    document.removeEventListener("mouseup", stopResize);
+  }
+
+  function saveWindowSize(width, height) {
+    if (chrome && chrome.storage && chrome.storage.sync) {
+      chrome.storage.sync.set({
+        windowSize: { width, height },
+      });
+    }
+  }
+
+  function restoreWindowSize() {
+    if (chrome && chrome.storage && chrome.storage.sync) {
+      chrome.storage.sync.get(["windowSize"], (result) => {
+        if (result.windowSize) {
+          document.body.style.width = result.windowSize.width + "px";
+          document.body.style.height = result.windowSize.height + "px";
+        }
+      });
+    }
+  }
+
+  // Keyboard shortcuts for resizing
+  document.addEventListener("keydown", (e) => {
+    if (e.ctrlKey || e.metaKey) {
+      switch (e.key) {
+        case "=":
+        case "+":
+          // Increase size
+          e.preventDefault();
+          resizeWindow(50, 50);
+          break;
+        case "-":
+          // Decrease size
+          e.preventDefault();
+          resizeWindow(-50, -50);
+          break;
+        case "0":
+          // Reset to default size
+          e.preventDefault();
+          resetWindowSize();
+          break;
+      }
+    }
+  });
+
+  function resizeWindow(deltaWidth, deltaHeight) {
+    const currentWidth = parseInt(document.defaultView.getComputedStyle(document.body).width, 10);
+    const currentHeight = parseInt(document.defaultView.getComputedStyle(document.body).height, 10);
+
+    const newWidth = Math.max(350, Math.min(800, currentWidth + deltaWidth));
+    const newHeight = Math.max(400, Math.min(1000, currentHeight + deltaHeight));
+
+    document.body.style.width = newWidth + "px";
+    document.body.style.height = newHeight + "px";
+
+    saveWindowSize(newWidth, newHeight);
+  }
+
+  function resetWindowSize() {
+    document.body.style.width = "400px";
+    document.body.style.height = "600px";
+    saveWindowSize(400, 600);
+  }
+
+  // Load saved options and window size on startup
   restoreOptions();
+  restoreWindowSize();
 });

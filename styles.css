@@ -1,6 +1,6 @@
 :root {
   --bg-color: #f4f7f9;
-  --container-bg: #ffffff; /* Not directly used, but good to have */
+  --container-bg: #ffffff;
   --primary-color: #007bff;
   --primary-hover: #0056b3;
   --secondary-color: #6c757d;
@@ -17,11 +17,11 @@
 body.dark-mode {
   --bg-color: #2c2c2c;
   --container-bg: #3a3a3a;
-  --primary-color: #66b3ff; /* Lighter blue for dark mode */
+  --primary-color: #66b3ff;
   --primary-hover: #4d94db;
   --secondary-color: #999999;
   --secondary-hover: #777777;
-  --success-color: #4caf50; /* Slightly adjusted green */
+  --success-color: #4caf50;
   --success-hover: #45a049;
   --text-color: #e0e0e0;
   --label-color: #c0c0c0;
@@ -35,6 +35,8 @@ body {
   color: var(--text-color);
   margin: 0;
   min-width: 350px;
+  resize: both;
+  overflow: auto;
 }
 
 .container.blurred {
@@ -45,14 +47,52 @@ body {
 
 .container {
   padding: 20px;
+  position: relative;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* --- Resize Handle --- */
+.resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: linear-gradient(-45deg, transparent 30%, var(--border-color) 30%, var(--border-color) 40%, transparent 40%, transparent 60%, var(--border-color) 60%, var(--border-color) 70%, transparent 70%);
+  cursor: nw-resize;
+  z-index: 1000;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.resize-handle:hover {
+  opacity: 1;
+}
+
+.header-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
 h1 {
   font-size: 1.25rem;
   color: var(--text-color);
   text-align: center;
-  margin-top: 0;
-  margin-bottom: 24px;
+  margin: 0;
+}
+
+.settings-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: var(--secondary-color);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+  margin-right: 15px;
 }
 
 .close-button {
@@ -67,6 +107,24 @@ h1 {
   cursor: pointer;
   padding: 0;
   transition: color 0.2s;
+  z-index: 1001;
+}
+
+.close-button-right {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--secondary-color);
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s;
+  z-index: 1002;
+}
+  transform: scale(1.05);
 }
 
 .form-group {
@@ -113,7 +171,9 @@ label {
 }
 
 /* Adjust padding for inputs/selects based on icon position */
-textarea, select, input[type="text"] {
+textarea,
+select,
+input[type="text"] {
   /* Default padding for inputs with left-aligned icons */
   padding-left: 35px !important;
   padding-right: 12px !important; /* Ensure right padding is default */
@@ -166,7 +226,67 @@ textarea {
   border-radius: 8px;
   padding: 15px 20px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* Subtle shadow for elevation */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  transform: translateY(-10px);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.settings-row {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.theme-row {
+  margin-top: 15px;
+}
+
+/* Theme Icon Centering */
+.theme-selector .input-icon.theme-icon-centered {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  color: var(--primary-color);
+  font-size: 1.1em;
+  z-index: 2;
+}
+
+/* Theme Select Styling */
+.theme-selector select {
+  padding-left: 12px !important;
+}
+
+/* Material UI Theme Select Styling */
+body.material-theme select {
+  border: 2px solid var(--primary-color);
+  border-radius: 12px;
+  background: var(--glass-bg);
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+body.material-theme .theme-selector select {
+  padding-left: 12px !important;
+}
+
+body.material-theme select:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--focus-ring-color);
+}
+
+body.material-theme .theme-selector .input-icon.theme-icon-centered {
+  color: var(--primary-color);
+}
+
+.settings-section:not(.hidden) {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
 }
 
 .settings-section h2 {
@@ -285,12 +405,35 @@ label.inline-label {
   display: none;
 }
 
+/* --- Output Header Styles --- */
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.output-header label {
+  margin-bottom: 0;
+}
+
+.output-header .actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.output-header .actions button {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+}
+
 /* --- Button Styles --- */
 .actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
-  margin-top: 8px;
+  margin-bottom: 16px; /* Add margin to separate from output */
 }
 
 button {
@@ -329,6 +472,82 @@ button#clear:hover {
   background-color: var(--secondary-hover);
 }
 
+/* --- Updated Collapsible Section Styling --- */
+.collapsible-section {
+  background-color: var(--container-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  box-shadow: none;
+  transition: all 0.3s ease;
+}
+
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: transparent;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-align: left;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.collapsible-header:hover {
+  color: var(--primary-color);
+  background-color: rgba(0, 123, 255, 0.1);
+}
+
+body.dark-mode .collapsible-header {
+  color: var(--label-color);
+}
+
+body.dark-mode .collapsible-header:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.1); /* Subtle background for better visibility */
+}
+
+.collapsible-header i {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.collapsible-header i.fa-chevron-down {
+  transform: rotate(0deg);
+}
+
+.collapsible-header i.fa-chevron-up {
+  transform: rotate(180deg);
+}
+
+.collapsible-content {
+  padding: 8px;
+  display: none;
+  background-color: var(--container-bg);
+  color: var(--text-color);
+}
+
+.collapsible-content.hidden {
+  display: none;
+}
+
+.collapsible-content:not(.hidden) {
+  display: block;
+}
+
+/* Adjust button size and spacing */
+.actions button {
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
 /* Icon visibility based on dark mode */
 body:not(.dark-mode) .theme-switcher .dark-mode-icon {
   display: none;
@@ -337,7 +556,6 @@ body:not(.dark-mode) .theme-switcher .dark-mode-icon {
 body.dark-mode .theme-switcher .light-mode-icon {
   display: none;
 }
-
 
 /* Slider specific styles */
 input:checked + .slider {
@@ -390,4 +608,475 @@ input:checked + .slider:before {
   100% {
     transform: rotate(360deg);
   }
+}
+
+/* --- Collapsible Section Styling --- */
+.collapsible-section {
+  background-color: var(--container-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.collapsible-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  background-color: var(--primary-color);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+.collapsible-header:hover {
+  background-color: var(--primary-hover);
+}
+
+.collapsible-header i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.collapsible-content {
+  padding: 15px;
+  display: none;
+  background-color: var(--container-bg);
+  color: var(--text-color);
+}
+
+.collapsible-content.hidden {
+  display: none;
+}
+
+.collapsible-content:not(.hidden) {
+  display: block;
+}
+/* --- Output Header Styles --- */
+.output-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.output-header label {
+  margin-bottom: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--label-color);
+}
+
+.output-header .actions {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.output-header .actions button {
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  color: white;
+}
+
+.output-header .actions button:active {
+  transform: translateY(1px);
+}
+
+.output-header .actions button#copy {
+  background-color: var(--success-color);
+}
+
+.output-header .actions button#copy:hover {
+  background-color: var(--success-hover);
+}
+
+.output-header .actions button#clear {
+  background-color: var(--secondary-color);
+}
+
+.output-header .actions button#clear:hover {
+  background-color: var(--secondary-hover);
+}
+/* === MATERIAL DESIGN 3 THEME === */
+body.material-theme {
+  /* Material Design 3 Color Tokens */
+  --md-sys-color-primary: #6750A4;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #EADDFF;
+  --md-sys-color-on-primary-container: #21005D;
+  --md-sys-color-secondary: #625B71;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #E8DEF8;
+  --md-sys-color-on-secondary-container: #1D192B;
+  --md-sys-color-tertiary: #7D5260;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #FFD8E4;
+  --md-sys-color-on-tertiary-container: #31111D;
+  --md-sys-color-error: #BA1A1A;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #FFDAD6;
+  --md-sys-color-on-error-container: #410002;
+  --md-sys-color-background: #FFFBFE;
+  --md-sys-color-on-background: #1C1B1F;
+  --md-sys-color-surface: #FFFBFE;
+  --md-sys-color-on-surface: #1C1B1F;
+  --md-sys-color-surface-variant: #E7E0EC;
+  --md-sys-color-on-surface-variant: #49454F;
+  --md-sys-color-outline: #79747E;
+  --md-sys-color-outline-variant: #CAC4D0;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #313033;
+  --md-sys-color-inverse-on-surface: #F4EFF4;
+  --md-sys-color-inverse-primary: #D0BCFF;
+  
+  /* Map to existing variables */
+  --bg-color: var(--md-sys-color-background);
+  --container-bg: var(--md-sys-color-surface);
+  --primary-color: var(--md-sys-color-primary);
+  --primary-hover: #5A3D99;
+  --secondary-color: var(--md-sys-color-secondary);
+  --secondary-hover: #4E4760;
+  --success-color: #4CAF50;
+  --success-hover: #45A049;
+  --text-color: var(--md-sys-color-on-surface);
+  --label-color: var(--md-sys-color-on-surface-variant);
+  --border-color: var(--md-sys-color-outline-variant);
+  --focus-ring-color: rgba(103, 80, 164, 0.12);
+  --glass-bg: var(--md-sys-color-surface);
+  --glass-border: var(--md-sys-color-outline-variant);
+  --card-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+body.material-theme.dark-mode {
+  /* Material Design 3 Dark Color Tokens */
+  --md-sys-color-primary: #D0BCFF;
+  --md-sys-color-on-primary: #381E72;
+  --md-sys-color-primary-container: #4F378B;
+  --md-sys-color-on-primary-container: #EADDFF;
+  --md-sys-color-secondary: #CCC2DC;
+  --md-sys-color-on-secondary: #332D41;
+  --md-sys-color-secondary-container: #4A4458;
+  --md-sys-color-on-secondary-container: #E8DEF8;
+  --md-sys-color-tertiary: #EFB8C8;
+  --md-sys-color-on-tertiary: #492532;
+  --md-sys-color-tertiary-container: #633B48;
+  --md-sys-color-on-tertiary-container: #FFD8E4;
+  --md-sys-color-error: #FFB4AB;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000A;
+  --md-sys-color-on-error-container: #FFDAD6;
+  --md-sys-color-background: #100E13;
+  --md-sys-color-on-background: #E6E1E5;
+  --md-sys-color-surface: #100E13;
+  --md-sys-color-on-surface: #E6E1E5;
+  --md-sys-color-surface-variant: #49454F;
+  --md-sys-color-on-surface-variant: #CAC4D0;
+  --md-sys-color-outline: #938F99;
+  --md-sys-color-outline-variant: #49454F;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #E6E1E5;
+  --md-sys-color-inverse-on-surface: #313033;
+  --md-sys-color-inverse-primary: #6750A4;
+  
+  /* Map to existing variables */
+  --bg-color: var(--md-sys-color-background);
+  --container-bg: var(--md-sys-color-surface);
+  --primary-color: var(--md-sys-color-primary);
+  --primary-hover: #B8A7E8;
+  --secondary-color: var(--md-sys-color-secondary);
+  --secondary-hover: #B0A7C0;
+  --success-color: #81C784;
+  --success-hover: #66BB6A;
+  --text-color: var(--md-sys-color-on-surface);
+  --label-color: var(--md-sys-color-on-surface-variant);
+  --border-color: var(--md-sys-color-outline-variant);
+  --focus-ring-color: rgba(208, 188, 255, 0.12);
+  --glass-bg: var(--md-sys-color-surface);
+  --glass-border: var(--md-sys-color-outline-variant);
+  --card-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4), 0px 4px 8px 3px rgba(0, 0, 0, 0.15);
+}
+
+/* Material U Body Background */
+body.material-theme {
+  background: var(--bg-color);
+  min-height: 100vh;
+}
+
+/* Material Design 3 Container */
+body.material-theme .container {
+  background: var(--md-sys-color-surface);
+  border-radius: 28px;
+  box-shadow: var(--card-shadow);
+  margin: 16px;
+  padding: 24px;
+}
+
+/* Material Design 3 Typography */
+body.material-theme h1 {
+  color: var(--md-sys-color-on-surface);
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 2rem;
+  letter-spacing: 0;
+  margin-bottom: 20px;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+/* Material Design 3 Settings Section */
+body.material-theme .settings-section {
+  background: var(--md-sys-color-surface-variant);
+  border-radius: 16px;
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+/* Material U Collapsible Section */
+body.material-theme .collapsible-section {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+
+body.material-theme .collapsible-header {
+  background: var(--primary-color);
+  color: white;
+  padding: 16px 20px;
+  font-weight: 600;
+  border-radius: 20px 20px 0 0;
+}
+
+body.material-theme .collapsible-header:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  transition: all 0.3s ease;
+}
+
+body.material-theme .collapsible-content {
+  background: var(--glass-bg);
+  padding: 20px;
+}
+
+/* Material Design 3 Form Elements */
+body.material-theme textarea,
+body.material-theme select,
+body.material-theme input[type="text"] {
+  background: var(--md-sys-color-surface-variant);
+  border: 1px solid var(--md-sys-color-outline);
+  border-radius: 4px;
+  color: var(--md-sys-color-on-surface);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding: 16px;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body.material-theme textarea:focus,
+body.material-theme select:focus,
+body.material-theme input[type="text"]:focus {
+  border: 2px solid var(--md-sys-color-primary);
+  outline: none;
+  background: var(--md-sys-color-surface);
+}
+
+body.material-theme textarea:hover,
+body.material-theme select:hover,
+body.material-theme input[type="text"]:hover {
+  border-color: var(--md-sys-color-on-surface);
+}
+
+/* Material Design 3 Buttons */
+body.material-theme button {
+  border-radius: 20px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  letter-spacing: 0.1px;
+  padding: 10px 24px;
+  border: none;
+  cursor: pointer;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  text-transform: none;
+}
+
+body.material-theme button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+body.material-theme button:hover::before {
+  left: 100%;
+}
+
+/* Material Design 3 Filled Buttons */
+body.material-theme button#copy {
+  background: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+body.material-theme button#copy:hover {
+  background: var(--primary-hover);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+}
+
+body.material-theme button#copy:active {
+  background: var(--md-sys-color-primary);
+  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+/* Material UI Clear Button */
+body.material-theme button#clear {
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  box-shadow: var(--card-shadow);
+}
+
+body.material-theme button#clear:hover {
+  background: var(--secondary-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(74, 85, 104, 0.3);
+}
+
+body.material-theme.dark-mode button#clear {
+  background: var(--secondary-color);
+  color: white;
+}
+
+body.material-theme.dark-mode button#clear:hover {
+  background: var(--secondary-hover);
+}
+
+body.material-theme .settings-button {
+  background: var(--primary-color);
+  color: white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--card-shadow);
+}
+
+body.material-theme .settings-button:hover {
+  transform: rotate(90deg) scale(1.05);
+  box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
+}
+
+/* Material U Close Button */
+body.material-theme .close-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: var(--secondary-color);
+  color: white;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  box-shadow: var(--card-shadow);
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+}
+
+body.material-theme .close-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(74, 85, 104, 0.3);
+}
+
+body.material-theme .close-button-right {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  background: var(--secondary-color);
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  box-shadow: var(--card-shadow);
+  border: none;
+  cursor: pointer;
+  z-index: 1002;
+}
+
+body.material-theme .close-button-right:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(74, 85, 104, 0.3);
+}
+
+/* Material U Input Icons */
+body.material-theme .input-icon {
+  color: var(--primary-color);
+  font-size: 1.2em;
+}
+
+/* Material U Switch */
+body.material-theme .slider {
+  background: var(--secondary-color);
+}
+
+body.material-theme input:checked + .slider {
+  background: var(--primary-color);
+}
+
+/* Material U Loader */
+body.material-theme .loader-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid transparent;
+  border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) 1;
+  animation: spin 1s linear infinite, colorShift 3s ease-in-out infinite;
+}
+
+@keyframes colorShift {
+  0%,
+  100% {
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    filter: hue-rotate(180deg);
+  }
+}
+
+/* Material U Error Messages */
+body.material-theme .error-message {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(240, 147, 251, 0.4);
 }
