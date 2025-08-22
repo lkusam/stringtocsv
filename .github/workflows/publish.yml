@@ -2,81 +2,133 @@ name: Publish Chrome Extension
 
 on:
   workflow_dispatch:
-  pull_request:
-    types: [closed]
-    branches: [main]
+  push:
+    branches:
+      - main
+    paths:
+      - "manifest.json"
+      - "index.html"
+      - "scripts.js"
+      - "styles.css"
 
 permissions:
   contents: write
 
 jobs:
   publish:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v3
-        with:
-          node-version: "18"
-
-      - name: Check for package.json
-        id: check_files
+      - name: Read version from manifest.json
+        id: manifest_version
         run: |
-          if [ -f "package.json" ]; then
-            echo "package_exists=true" >> $GITHUB_OUTPUT
+          VERSION=$(grep -o '"version": "[^"]*"' manifest.json | cut -d'"' -f4)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Found version: $VERSION"
+
+      - name: Check if tag exists
+        id: check_tag
+        run: |
+          if git rev-parse "v${{ steps.manifest_version.outputs.version }}" >/dev/null 2>&1; then
+            echo "tag_exists=true" >> $GITHUB_OUTPUT
+            echo "Tag v${{ steps.manifest_version.outputs.version }} already exists"
           else
-            echo "package_exists=false" >> $GITHUB_OUTPUT
+            echo "tag_exists=false" >> $GITHUB_OUTPUT
+            echo "Tag v${{ steps.manifest_version.outputs.version }} does not exist"
           fi
-          
-      - name: Create basic package.json if missing
-        if: steps.check_files.outputs.package_exists == 'false'
-        run: |
-          echo '{"name":"chrome-extension","version":"1.0.0","scripts":{"build":"mkdir -p dist"}}' > package.json
-          mkdir -p dist
-          
-      - name: Install & Build
-        run: |
-          npm install
-          npm run build
 
       - name: Package Extension
         run: |
+          # Create dist directory
           mkdir -p dist
-          cd dist
-          # Create a dummy file if directory is empty
-          if [ -z "$(ls -A)" ]; then
-            echo '{"manifest_version":3,"name":"Extension","version":"1.0.'$GITHUB_RUN_NUMBER'"}' > manifest.json
-          fi
-          
-          # Update version in existing manifest.json if it exists
-          if [ -f "manifest.json" ]; then
-            # Try to update version using jq if available
-            if command -v jq &> /dev/null; then
-              jq '.version = "1.0.'$GITHUB_RUN_NUMBER'"' manifest.json > manifest.json.tmp && mv manifest.json.tmp manifest.json
-            else
-              # Fallback to sed if jq is not available
-              sed -i 's/"version": "[^"]*"/"version": "1.0.'$GITHUB_RUN_NUMBER'"/g' manifest.json
-            fi
-          fi
-          zip -r ../extension.zip .
 
-      - name: Upload & Publish
+          # Copy extension files (excluding development files)
+          cp manifest.json dist/
+          cp index.html dist/
+          cp scripts.js dist/
+          cp styles.css dist/
+          cp README.md dist/
+
+          # Create the zip file
+          cd dist
+          zip -r ../string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip .
+          cd ..
+
+          # Also create a generic name for latest release
+          cp string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip string-to-csv-converter-latest.zip
+
+      - name: Generate Release Notes
+        id: release_notes
+        run: |
+          cat > release_notes.md << 'EOF'
+          ## String to CSV Converter v${{ steps.manifest_version.outputs.version }}
+
+          ### 🎨 New Features
+          - **Enhanced UI/UX**: Added Material Design 3 theme with modern styling
+          - **Resizable Interface**: Drag-to-resize functionality with size persistence
+          - **Visual Feedback**: Dynamic icons and real-time input counters
+          - **Collapsible Settings**: Organized settings panel with expandable sections
+
+          ### 🚀 Improvements
+          - **Performance Optimization**: Improved handling of large inputs (up to 15M characters)
+          - **Better Accessibility**: Enhanced contrast ratios and keyboard navigation
+          - **Theme System**: Comprehensive theming with light/dark mode support
+          - **Settings Organization**: Better space management and user experience
+
+          ### 🔧 Technical Updates
+          - Modern ES6+ JavaScript implementation
+          - CSS3 with CSS Custom Properties for theming
+          - Debounced input processing for smooth performance
+          - Enhanced error handling and user feedback
+
+          ### 📦 Installation
+          1. Download the `string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip` file
+          2. Extract the contents
+          3. Open Chrome and go to `chrome://extensions/`
+          4. Enable "Developer mode"
+          5. Click "Load unpacked" and select the extracted folder
+
+          ### 🔗 Links
+          - [Chrome Web Store](https://chrome.google.com/webstore) (if published)
+          - [GitHub Repository](https://github.com/${{ github.repository }})
+          - [Documentation](https://github.com/${{ github.repository }}#readme)
+          EOF
+
+      - name: Create GitHub Release
+        if: steps.check_tag.outputs.tag_exists == 'false'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.manifest_version.outputs.version }}
+          name: String to CSV Converter v${{ steps.manifest_version.outputs.version }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+          files: |
+            string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip
+            string-to-csv-converter-latest.zip
+
+      - name: Upload to Chrome Web Store (Optional)
+        if: steps.check_tag.outputs.tag_exists == 'false'
         uses: mnao305/chrome-extension-upload@v5.0.0
         with:
-          file-path: extension.zip
+          file-path: string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip
           extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
           client-id: ${{ secrets.CHROME_CLIENT_ID }}
           client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
           refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
           publish: true
-          
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          tag_name: v${{ github.run_number }}
-          name: Release v${{ github.run_number }}
-          draft: false
-          prerelease: false
-          files: extension.zip
+        env:
+          CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+
+      - name: Output Results
+        run: |
+          echo "✅ Build completed for version ${{ steps.manifest_version.outputs.version }}"
+          echo "📦 Package: string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip"
+          if [ "${{ steps.check_tag.outputs.tag_exists }}" = "true" ]; then
+            echo "ℹ️  Release already exists for this version"
+          else
+            echo "🎉 New release created: v${{ steps.manifest_version.outputs.version }}"
+          fi
