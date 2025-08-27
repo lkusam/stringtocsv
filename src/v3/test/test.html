@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chrome Extension v3 - Test Suite</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.6;
+      }
+
+      .header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 20px;
+        background: #f5f5f5;
+        border-radius: 8px;
+      }
+
+      .test-output {
+        background: #000;
+        color: #0f0;
+        padding: 20px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        white-space: pre-wrap;
+        max-height: 600px;
+        overflow-y: auto;
+        margin: 20px 0;
+      }
+
+      .controls {
+        text-align: center;
+        margin: 20px 0;
+      }
+
+      button {
+        background: #007cba;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 0 10px;
+      }
+
+      button:hover {
+        background: #005a8b;
+      }
+
+      button:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+      }
+
+      .status {
+        text-align: center;
+        margin: 20px 0;
+        font-weight: bold;
+      }
+
+      .status.running {
+        color: #ff9800;
+      }
+
+      .status.passed {
+        color: #4caf50;
+      }
+
+      .status.failed {
+        color: #f44336;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1>🧪 Chrome Extension v3 Test Suite</h1>
+      <p>Comprehensive testing for all components and features</p>
+    </div>
+
+    <div class="controls">
+      <button id="run-tests" onclick="runTests()">Run All Tests</button>
+      <button id="clear-output" onclick="clearOutput()">Clear Output</button>
+      <button id="download-report" onclick="downloadReport()" disabled>Download Report</button>
+    </div>
+
+    <div id="status" class="status">Ready to run tests</div>
+
+    <div id="test-output" class="test-output">Click "Run All Tests" to start the test suite...</div>
+
+    <script type="module">
+      import { runAllTests } from "./runTests.js";
+
+      let testResults = null;
+
+      window.runTests = async function () {
+        const runButton = document.getElementById("run-tests");
+        const status = document.getElementById("status");
+        const output = document.getElementById("test-output");
+        const downloadButton = document.getElementById("download-report");
+
+        runButton.disabled = true;
+        status.textContent = "Running tests...";
+        status.className = "status running";
+        output.textContent = "";
+
+        // Capture console output
+        const originalLog = console.log;
+        const originalError = console.error;
+        const originalWarn = console.warn;
+
+        const captureOutput = (type, ...args) => {
+          const message = args.map((arg) => (typeof arg === "object" ? JSON.stringify(arg, null, 2) : String(arg))).join(" ");
+
+          output.textContent += `[${type.toUpperCase()}] ${message}\n`;
+          output.scrollTop = output.scrollHeight;
+
+          // Call original function
+          if (type === "log") originalLog(...args);
+          else if (type === "error") originalError(...args);
+          else if (type === "warn") originalWarn(...args);
+        };
+
+        console.log = (...args) => captureOutput("log", ...args);
+        console.error = (...args) => captureOutput("error", ...args);
+        console.warn = (...args) => captureOutput("warn", ...args);
+
+        try {
+          testResults = await runAllTests();
+
+          if (testResults.failed === 0) {
+            status.textContent = `✅ All tests passed! (${testResults.passed}/${testResults.total})`;
+            status.className = "status passed";
+          } else {
+            status.textContent = `❌ ${testResults.failed} test(s) failed (${testResults.passed}/${testResults.total} passed)`;
+            status.className = "status failed";
+          }
+
+          downloadButton.disabled = false;
+        } catch (error) {
+          status.textContent = "💥 Test runner failed";
+          status.className = "status failed";
+          captureOutput("error", "Test runner error:", error);
+        } finally {
+          // Restore console functions
+          console.log = originalLog;
+          console.error = originalError;
+          console.warn = originalWarn;
+
+          runButton.disabled = false;
+        }
+      };
+
+      window.clearOutput = function () {
+        document.getElementById("test-output").textContent = "Output cleared...";
+        document.getElementById("status").textContent = "Ready to run tests";
+        document.getElementById("status").className = "status";
+      };
+
+      window.downloadReport = function () {
+        if (!testResults) return;
+
+        const report = {
+          timestamp: new Date().toISOString(),
+          results: testResults,
+          environment: {
+            userAgent: navigator.userAgent,
+            platform: navigator.platform,
+            language: navigator.language,
+          },
+        };
+
+        const blob = new Blob([JSON.stringify(report, null, 2)], {
+          type: "application/json",
+        });
+
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `test-report-${new Date().toISOString().split("T")[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      };
+    </script>
+  </body>
+</html>

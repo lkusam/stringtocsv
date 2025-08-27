@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Material Design Settings Test</title>
+    <link rel="stylesheet" href="src/v3/components/ApplicationSettings.css" />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+
+      .test-button {
+        padding: 12px 24px;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        margin-bottom: 20px;
+      }
+
+      .test-button:hover {
+        background: #1d4ed8;
+      }
+
+      /* CSS Variables for theming */
+      :root {
+        --color-text: #1f2937;
+        --color-text-secondary: #6b7280;
+        --color-background: #ffffff;
+        --color-surface: #f8fafc;
+        --color-border: #e5e7eb;
+        --color-hover: #f3f4f6;
+      }
+
+      [data-theme="dark"] {
+        --color-text: #f1f5f9;
+        --color-text-secondary: #94a3b8;
+        --color-background: #1e293b;
+        --color-surface: #334155;
+        --color-border: #475569;
+        --color-hover: #475569;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Material Design Settings Panel Test</h1>
+    <button class="test-button" onclick="showSettings()">Open Settings Panel</button>
+
+    <div id="app-settings-panel" class="app-settings-panel hidden">
+      <div class="settings-overlay"></div>
+      <div class="settings-content">
+        <div class="settings-header">
+          <h2>Application Settings</h2>
+          <button class="close-btn" onclick="hideSettings()">&times;</button>
+        </div>
+
+        <div class="settings-body">
+          <!-- Theme Settings -->
+          <div class="settings-section">
+            <h3>Appearance</h3>
+            <div class="setting-item">
+              <label for="theme-select">Theme:</label>
+              <select id="theme-select" class="setting-select">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="auto">Auto (System)</option>
+              </select>
+            </div>
+            <div class="setting-item">
+              <label>
+                <input type="checkbox" id="high-contrast" class="setting-checkbox" />
+                High contrast mode
+              </label>
+            </div>
+          </div>
+
+          <!-- Data Processing Settings -->
+          <div class="settings-section">
+            <h3>Data Processing</h3>
+            <div class="setting-item">
+              <label>
+                <input type="checkbox" id="trim-whitespace" class="setting-checkbox" checked />
+                Trim whitespace by default
+              </label>
+            </div>
+            <div class="setting-item">
+              <label>
+                <input type="checkbox" id="smart-detection" class="setting-checkbox" checked />
+                Enable smart format detection
+              </label>
+            </div>
+            <div class="setting-item">
+              <label for="default-separator">Default separator:</label>
+              <select id="default-separator" class="setting-select">
+                <option value="newline" selected>New Line</option>
+                <option value="comma">Comma</option>
+                <option value="semicolon">Semicolon</option>
+                <option value="tab">Tab</option>
+                <option value="pipe">Pipe (|)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Performance Settings -->
+          <div class="settings-section">
+            <h3>Performance</h3>
+            <div class="setting-item">
+              <label>
+                <input type="checkbox" id="enable-streaming" class="setting-checkbox" checked />
+                Enable streaming for large files
+              </label>
+            </div>
+            <div class="setting-item">
+              <label for="worker-count">Worker threads:</label>
+              <select id="worker-count" class="setting-select">
+                <option value="1">1 (Single-threaded)</option>
+                <option value="2" selected>2 (Default)</option>
+                <option value="4">4 (High performance)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- System Settings -->
+          <div class="settings-section">
+            <h3>System</h3>
+            <div class="system-actions">
+              <button class="action-btn reload-btn">
+                <span class="action-icon">🔄</span>
+                <div class="action-content">
+                  <div class="action-title">Reload Application</div>
+                  <div class="action-description">Restart the extension</div>
+                </div>
+              </button>
+              <button class="action-btn report-btn">
+                <span class="action-icon">🐛</span>
+                <div class="action-content">
+                  <div class="action-title">Report Issue</div>
+                  <div class="action-description">Report a bug or problem</div>
+                </div>
+              </button>
+              <button class="action-btn danger-btn">
+                <span class="action-icon">⚠️</span>
+                <div class="action-content">
+                  <div class="action-title">Reset All Settings</div>
+                  <div class="action-description">Reset to default settings</div>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Debug Info -->
+          <div class="settings-section">
+            <h3>Debug Information</h3>
+            <div class="debug-info">
+              <div class="debug-info-item">
+                <span class="debug-info-label">Extension Version:</span>
+                <span>3.0.0</span>
+              </div>
+              <div class="debug-info-item">
+                <span class="debug-info-label">Last Error:</span>
+                <span>None</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="settings-footer">
+          <button class="btn-secondary" onclick="hideSettings()">Cancel</button>
+          <button class="btn-primary" onclick="saveSettings()">Save Settings</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showSettings() {
+        document.getElementById("app-settings-panel").classList.remove("hidden");
+      }
+
+      function hideSettings() {
+        document.getElementById("app-settings-panel").classList.add("hidden");
+      }
+
+      function saveSettings() {
+        alert("Settings saved! (This is just a demo)");
+        hideSettings();
+      }
+
+      // Close on overlay click
+      document.querySelector(".settings-overlay").addEventListener("click", hideSettings);
+
+      // Close on ESC key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          hideSettings();
+        }
+      });
+    </script>
+  </body>
+</html>

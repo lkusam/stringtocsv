@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test Application Settings</title>
+    <link rel="stylesheet" href="src/v3/styles/main.css" />
+    <link rel="stylesheet" href="src/v3/components/ApplicationSettings.css" />
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        padding: 20px;
+        background: #f5f5f5;
+      }
+      .test-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+      .test-button {
+        background: #007cba;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 10px;
+      }
+      .test-button:hover {
+        background: #005a8b;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="test-container">
+      <h1>Application Settings Test</h1>
+      <p>Click the button below to test the application settings panel:</p>
+
+      <button class="test-button" onclick="openSettings()">Open Settings Panel</button>
+      <button class="test-button" onclick="testReportIssue()">Test Report Issue</button>
+
+      <div id="status" style="margin-top: 20px; padding: 10px; background: #f0f0f0; border-radius: 4px">Status: Ready to test</div>
+    </div>
+
+    <script type="module">
+      // Mock Chrome storage API for testing
+      window.chrome = {
+        storage: {
+          sync: {
+            get: (keys, callback) => {
+              // Return default settings
+              callback({
+                settings: {
+                  ui: { theme: "light", highContrast: false },
+                  processing: { trimWhitespace: true, smartDetection: true, defaultSeparator: "newline" },
+                  performance: { enableStreaming: true, workerCount: 2 },
+                },
+              });
+            },
+            set: (data, callback) => {
+              console.log("Settings saved:", data);
+              if (callback) callback();
+            },
+          },
+        },
+      };
+
+      // Mock app class
+      class MockApp {
+        constructor() {
+          this.settings = {
+            ui: { theme: "light", highContrast: false },
+            processing: { trimWhitespace: true, smartDetection: true, defaultSeparator: "newline" },
+            performance: { enableStreaming: true, workerCount: 2 },
+          };
+        }
+
+        async updateSettings(newSettings) {
+          console.log("Updating settings:", newSettings);
+          this.settings = {
+            ...this.settings,
+            ...newSettings,
+            ui: { ...this.settings.ui, ...newSettings.ui },
+            processing: { ...this.settings.processing, ...newSettings.processing },
+            performance: { ...this.settings.performance, ...newSettings.performance },
+          };
+
+          document.getElementById("status").textContent = `Settings updated: ${JSON.stringify(newSettings)}`;
+        }
+
+        async resetSettings() {
+          console.log("Resetting settings");
+          this.settings = {
+            ui: { theme: "light", highContrast: false },
+            processing: { trimWhitespace: true, smartDetection: true, defaultSeparator: "newline" },
+            performance: { enableStreaming: true, workerCount: 2 },
+          };
+          document.getElementById("status").textContent = "Settings reset to defaults";
+        }
+
+        getDefaultSettings() {
+          return {
+            ui: { theme: "light", highContrast: false },
+            processing: { trimWhitespace: true, smartDetection: true, defaultSeparator: "newline" },
+            performance: { enableStreaming: true, workerCount: 2 },
+          };
+        }
+      }
+
+      // Import and initialize ApplicationSettings
+      import { ApplicationSettings } from "./src/v3/components/ApplicationSettings.js";
+
+      const mockApp = new MockApp();
+      const appSettings = new ApplicationSettings(mockApp);
+      appSettings.initialize();
+
+      // Make functions globally available
+      window.openSettings = () => {
+        appSettings.show();
+        document.getElementById("status").textContent = "Settings panel opened";
+      };
+
+      window.testReportIssue = () => {
+        // Mock error for testing
+        window.lastError = "Test error for demonstration";
+        window.moduleLoadErrors = ["Test module error"];
+
+        if (window.handleReportIssue) {
+          window.handleReportIssue();
+          document.getElementById("status").textContent = "Report issue function called";
+        } else {
+          document.getElementById("status").textContent = "Report issue function not available";
+        }
+      };
+
+      console.log("Test page loaded successfully");
+      document.getElementById("status").textContent = "Test page loaded - ApplicationSettings initialized";
+    </script>
+
+    <!-- Load ErrorBoundary for report issue functionality -->
+    <script src="src/v3/utils/ErrorBoundary.js"></script>
+  </body>
+</html>

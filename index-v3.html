@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>String to CSV Converter v3</title>
+
+    <!-- Critical resources will be loaded normally -->
+
+    <!-- Using system fonts for CSP compliance -->
+
+    <!-- Critical CSS inlined for performance -->
+    <style>
+      /* Critical above-the-fold styles */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        width: 420px;
+        min-height: 600px;
+        max-height: 800px;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.5;
+        color: var(--color-text, #333);
+        background-color: var(--color-background, #fff);
+        overflow: hidden;
+      }
+
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--color-background, #fff);
+        z-index: 9999;
+      }
+
+      .loading-spinner {
+        width: 40px;
+        height: 40px;
+        border: 3px solid var(--color-border, #ddd);
+        border-top: 3px solid var(--color-primary, #007cba);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .sr-only {
+        position: absolute !important;
+        width: 1px !important;
+        height: 1px !important;
+        padding: 0 !important;
+        margin: -1px !important;
+        overflow: hidden !important;
+        clip: rect(0, 0, 0, 0) !important;
+        white-space: nowrap !important;
+        border: 0 !important;
+      }
+
+      .skip-links {
+        position: absolute;
+        top: -40px;
+        left: 6px;
+        z-index: 1000;
+      }
+
+      .skip-link {
+        position: absolute;
+        background: var(--color-background, #fff);
+        color: var(--color-text, #333);
+        padding: 8px;
+        text-decoration: none;
+        border: 1px solid var(--color-border, #ddd);
+        border-radius: 4px;
+      }
+
+      .skip-link:focus {
+        top: 6px;
+      }
+
+      #app {
+        width: 420px;
+        min-height: 600px;
+        max-height: 800px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      .app-hidden {
+        display: none;
+      }
+
+      /* Basic component styling */
+      #tab-navigation {
+        background: #f5f5f5;
+        border-bottom: 1px solid #ddd;
+        padding: 12px;
+      }
+
+      #tab-panels {
+        flex: 1;
+        padding: 16px;
+        overflow-y: auto;
+      }
+
+      .status-bar {
+        background: #f9f9f9;
+        border-top: 1px solid #ddd;
+        padding: 8px 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+      }
+
+      .side-panels {
+        display: none; /* Hidden by default */
+      }
+
+      /* Error boundary styles */
+      .error-boundary {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 600px;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .error-content {
+        max-width: 300px;
+      }
+
+      .error-content h2 {
+        color: #dc3545;
+        margin-bottom: 16px;
+      }
+
+      .error-content p {
+        color: #666;
+        margin-bottom: 20px;
+      }
+
+      .error-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+      }
+
+      .error-actions button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      #reload-button {
+        background: #007cba;
+        color: white;
+      }
+
+      #report-error {
+        background: #6c757d;
+        color: white;
+      }
+    </style>
+
+    <!-- Load accessibility styles -->
+    <link rel="stylesheet" href="src/v3/styles/accessibility.css" />
+
+    <!-- Load main v3 styles -->
+    <link rel="stylesheet" href="src/v3/styles/main.css" />
+
+    <!-- Load application settings styles -->
+    <link rel="stylesheet" href="src/v3/components/ApplicationSettings.css" />
+
+    <!-- Using Unicode symbols instead of Font Awesome for CSP compliance -->
+  </head>
+  <body>
+    <!-- Skip links for accessibility -->
+    <div class="skip-links">
+      <a href="#main-content" class="skip-link">Skip to main content</a>
+      <a href="#tab-navigation" class="skip-link">Skip to navigation</a>
+      <a href="#settings-panel" class="skip-link">Skip to settings</a>
+    </div>
+
+    <!-- Loading screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-spinner" role="status" aria-label="Loading application"></div>
+      <span class="sr-only">Loading String to CSV Converter...</span>
+    </div>
+
+    <!-- Main application container -->
+    <div id="app" class="app-hidden" role="application" aria-label="String to CSV Converter">
+      <!-- ARIA live regions for announcements -->
+      <div id="aria-live-polite" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+      <div id="aria-live-assertive" aria-live="assertive" aria-atomic="true" class="sr-only"></div>
+
+      <!-- Main content area -->
+      <main id="main-content" role="main">
+        <!-- Tab navigation -->
+        <nav id="tab-navigation" role="tablist" aria-label="Processing modes">
+          <!-- Tabs will be dynamically inserted here -->
+        </nav>
+
+        <!-- Tab panels container -->
+        <div id="tab-panels" class="tab-panels">
+          <!-- Tab panels will be dynamically inserted here -->
+        </div>
+      </main>
+
+      <!-- Side panels -->
+      <aside id="side-panels" class="side-panels">
+        <!-- Settings panel -->
+        <div id="settings-panel" class="side-panel" role="complementary" aria-label="Settings">
+          <!-- Settings content will be dynamically inserted here -->
+        </div>
+
+        <!-- Export panel -->
+        <div id="export-panel" class="side-panel" role="complementary" aria-label="Export options">
+          <!-- Export content will be dynamically inserted here -->
+        </div>
+
+        <!-- Validation panel -->
+        <div id="validation-panel" class="side-panel" role="complementary" aria-label="Validation results">
+          <!-- Validation content will be dynamically inserted here -->
+        </div>
+
+        <!-- Template library panel -->
+        <div id="template-panel" class="side-panel" role="complementary" aria-label="Template library">
+          <!-- Template content will be dynamically inserted here -->
+        </div>
+      </aside>
+
+      <!-- Status bar -->
+      <footer id="status-bar" class="status-bar" role="status" aria-live="polite">
+        <div class="status-info">
+          <span id="performance-info" class="performance-info"></span>
+        </div>
+        <div class="status-actions">
+          <button id="help-button" type="button" aria-label="Show help and keyboard shortcuts">❓</button>
+          <button id="settings-toggle" type="button" aria-label="Toggle application settings">⚙️</button>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Error boundary -->
+    <div id="error-boundary" class="error-boundary app-hidden" role="alert">
+      <div class="error-content">
+        <h2>Something went wrong</h2>
+        <p id="error-message">An unexpected error occurred. Please refresh the page to try again.</p>
+        <div class="error-actions">
+          <button id="reload-button" type="button">Reload Application</button>
+          <button id="report-error" type="button">Report Issue</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Error boundary and performance monitoring -->
+    <script src="src/v3/utils/ErrorBoundary.js"></script>
+
+    <!-- Font loader -->
+    <script src="src/v3/utils/FontLoader.js"></script>
+
+    <!-- Load main application (deferred for performance) -->
+    <script type="module" src="src/v3/index.js" defer></script>
+
+    <!-- Debug script for development -->
+    <script src="debug-extension.js" defer></script>
+  </body>
+</html>

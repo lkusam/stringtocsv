@@ -1,0 +1,602 @@
+/**
+ * Accessibility styles for Chrome Extension v3
+ * Provides comprehensive accessibility support including high contrast, focus indicators, and responsive design
+ */
+
+/* CSS Custom Properties for Accessibility */
+:root {
+  --focus-outline-width: 2px;
+  --focus-outline-offset: 2px;
+  --focus-outline-color: var(--color-focus, #007cba);
+  --border-radius: 4px;
+  --transition-duration: 0.2s;
+  --base-font-size: 16px;
+  --line-height: 1.5;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+}
+
+/* Base accessibility styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: var(--base-font-size);
+  line-height: var(--line-height);
+  /* Chrome extension popup dimensions */
+  width: 420px;
+  min-height: 600px;
+  max-height: 800px;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  margin: 0;
+  padding: 0;
+  color: var(--color-text);
+  background-color: var(--color-background);
+  transition: color var(--transition-duration), background-color var(--transition-duration);
+  /* Chrome extension popup dimensions */
+  width: 420px;
+  min-height: 600px;
+  max-height: 800px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* Skip links */
+.skip-links {
+  position: relative;
+  z-index: 1000;
+}
+
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: var(--spacing-sm);
+  background: var(--color-background);
+  color: var(--color-text);
+  padding: var(--spacing-sm) var(--spacing-md);
+  text-decoration: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  font-weight: 500;
+  transition: top var(--transition-duration);
+}
+
+.skip-link:focus {
+  top: var(--spacing-sm);
+  outline: var(--focus-outline-width) solid var(--focus-outline-color);
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* Focus management */
+.focus-visible {
+  outline: var(--focus-outline-width) solid var(--focus-outline-color) !important;
+  outline-offset: var(--focus-outline-offset) !important;
+}
+
+/* Hide focus outline when using mouse */
+.using-mouse *:focus {
+  outline: none !important;
+}
+
+/* Interactive elements */
+button,
+input,
+select,
+textarea,
+a {
+  transition: all var(--transition-duration);
+}
+
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+a:focus {
+  outline: var(--focus-outline-width) solid var(--focus-outline-color);
+  outline-offset: var(--focus-outline-offset);
+}
+
+/* Button styles */
+button {
+  background: var(--color-primary);
+  color: white;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--border-radius);
+  font-size: inherit;
+  font-family: inherit;
+  cursor: pointer;
+  min-height: 44px; /* Touch target size */
+  min-width: 44px;
+}
+
+button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+button:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.secondary {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+/* Form elements */
+input,
+select,
+textarea {
+  background: var(--color-background);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: inherit;
+  font-family: inherit;
+  min-height: 44px;
+}
+
+input:invalid,
+select:invalid,
+textarea:invalid {
+  border-color: var(--color-error);
+}
+
+input[aria-invalid="true"],
+select[aria-invalid="true"],
+textarea[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+/* Labels */
+label {
+  display: block;
+  margin-bottom: var(--spacing-xs);
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+label.required::after {
+  content: " *";
+  color: var(--color-error);
+}
+
+/* Error messages */
+.error-message {
+  color: var(--color-error);
+  font-size: 0.875em;
+  margin-top: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.error-message::before {
+  content: "⚠";
+  font-weight: bold;
+}
+
+/* Success messages */
+.success-message {
+  color: var(--color-success);
+  font-size: 0.875em;
+  margin-top: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.success-message::before {
+  content: "✓";
+  font-weight: bold;
+}
+
+/* High contrast mode */
+.high-contrast {
+  --focus-outline-width: 3px;
+  --border-radius: 0;
+}
+
+.high-contrast button,
+.high-contrast input,
+.high-contrast select,
+.high-contrast textarea {
+  border: 2px solid var(--color-border) !important;
+  border-radius: 0 !important;
+}
+
+.high-contrast button:focus,
+.high-contrast input:focus,
+.high-contrast select:focus,
+.high-contrast textarea:focus {
+  outline: 3px solid var(--focus-outline-color) !important;
+  outline-offset: 2px !important;
+}
+
+.high-contrast .search-highlight {
+  background: var(--color-warning) !important;
+  color: var(--color-text) !important;
+  border: 2px solid var(--color-border) !important;
+}
+
+.high-contrast .search-current {
+  background: var(--color-focus) !important;
+  color: white !important;
+  border: 2px solid var(--color-text) !important;
+}
+
+/* Reduced motion */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Dark mode */
+.dark-mode {
+  --color-background: #1a1a1a;
+  --color-surface: #2d2d2d;
+  --color-text: #ffffff;
+  --color-text-secondary: #cccccc;
+  --color-border: #404040;
+  --color-primary: #4a9eff;
+}
+
+.dark-mode.high-contrast {
+  --color-background: #000000;
+  --color-surface: #1a1a1a;
+  --color-text: #ffffff;
+  --color-text-secondary: #ffffff;
+  --color-border: #ffffff;
+  --color-primary: #ffffff;
+}
+
+/* Search and filter components */
+.search-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.search-input {
+  flex: 1;
+  padding-right: 40px; /* Space for clear button */
+}
+
+.search-clear {
+  position: absolute;
+  right: 80px; /* Space for navigation buttons */
+  background: none;
+  border: none;
+  font-size: 1.2em;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  min-height: 32px;
+  min-width: 32px;
+  padding: 0;
+}
+
+.search-navigation {
+  display: flex;
+  gap: var(--spacing-xs);
+}
+
+.search-prev,
+.search-next {
+  min-height: 32px;
+  min-width: 32px;
+  padding: 0;
+  font-size: 1.1em;
+}
+
+.search-results-info {
+  font-size: 0.875em;
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+}
+
+.search-highlight {
+  background: var(--color-warning);
+  color: var(--color-text);
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+
+.search-current {
+  background: var(--color-focus);
+  color: white;
+  padding: 1px 2px;
+  border-radius: 2px;
+}
+
+/* Filter panel */
+.filter-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-md);
+  margin-bottom: var(--spacing-md);
+}
+
+.filter-panel h3 {
+  margin: 0 0 var(--spacing-md) 0;
+  color: var(--color-text);
+}
+
+.filter-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.filter-item:last-child {
+  margin-bottom: 0;
+}
+
+.filter-item input[type="checkbox"] {
+  min-height: 20px;
+  min-width: 20px;
+}
+
+.filter-item label {
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Dialog styles */
+.accessibility-help-dialog,
+.shortcut-help-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: var(--spacing-md);
+}
+
+.accessibility-help-content,
+.shortcut-help-content {
+  background: var(--color-background);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.accessibility-help-close,
+.shortcut-help-close {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: none;
+  border: none;
+  font-size: 1.5em;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  min-height: 32px;
+  min-width: 32px;
+  padding: 0;
+}
+
+.accessibility-help-content h2,
+.shortcut-help-content h2 {
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--color-text);
+}
+
+.accessibility-help-content h3,
+.shortcut-help-content h3 {
+  margin: var(--spacing-lg) 0 var(--spacing-md) 0;
+  color: var(--color-text);
+}
+
+.accessibility-help-content section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.accessibility-help-content ul,
+.shortcut-help-content ul {
+  margin: 0;
+  padding-left: var(--spacing-lg);
+}
+
+.accessibility-help-content li,
+.shortcut-help-content li {
+  margin-bottom: var(--spacing-sm);
+}
+
+/* Shortcut help specific styles */
+.shortcut-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--spacing-sm) var(--spacing-md);
+  margin: 0;
+}
+
+.shortcut-list dt {
+  font-weight: bold;
+  margin: 0;
+}
+
+.shortcut-list dd {
+  margin: 0;
+}
+
+.shortcut-list kbd {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 0.875em;
+  font-family: monospace;
+}
+
+/* Settings panel */
+.accessibility-settings-panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius);
+  padding: var(--spacing-lg);
+}
+
+.accessibility-settings-panel h3 {
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--color-text);
+}
+
+.setting-group {
+  margin-bottom: var(--spacing-lg);
+}
+
+.setting-group:last-child {
+  margin-bottom: 0;
+}
+
+.setting-group label {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  cursor: pointer;
+}
+
+.setting-group input[type="checkbox"] {
+  min-height: 20px;
+  min-width: 20px;
+  margin: 0;
+}
+
+.setting-help {
+  font-size: 0.875em;
+  color: var(--color-text-secondary);
+  margin-top: var(--spacing-xs);
+  margin-left: var(--spacing-lg);
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+  :root {
+    --base-font-size: 14px;
+    --spacing-md: 12px;
+    --spacing-lg: 18px;
+  }
+
+  .accessibility-help-content,
+  .shortcut-help-content {
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm);
+  }
+
+  .shortcut-list {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xs);
+  }
+
+  .shortcut-list dt {
+    margin-bottom: var(--spacing-xs);
+  }
+}
+
+/* Print styles */
+@media print {
+  .skip-links,
+  .search-navigation,
+  .accessibility-help-close,
+  .shortcut-help-close {
+    display: none !important;
+  }
+
+  .accessibility-help-dialog,
+  .shortcut-help-dialog {
+    position: static !important;
+    background: none !important;
+    padding: 0 !important;
+  }
+
+  .accessibility-help-content,
+  .shortcut-help-content {
+    box-shadow: none !important;
+    border: 1px solid #000 !important;
+    max-height: none !important;
+  }
+}
+
+/* Animation for smooth transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.accessibility-help-dialog,
+.shortcut-help-dialog {
+  animation: fadeIn var(--transition-duration) ease-out;
+}
+
+.accessibility-help-content,
+.shortcut-help-content {
+  animation: slideIn var(--transition-duration) ease-out;
+}
+
+/* Ensure animations respect reduced motion */
+.reduced-motion .accessibility-help-dialog,
+.reduced-motion .shortcut-help-dialog,
+.reduced-motion .accessibility-help-content,
+.reduced-motion .shortcut-help-content {
+  animation: none !important;
+}

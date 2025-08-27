@@ -1,0 +1,551 @@
+/**
+ * Material Design Application Settings Panel
+ */
+
+.app-settings-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.app-settings-panel.hidden {
+  display: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.settings-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.settings-content {
+  position: relative;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border-radius: 16px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  width: 90%;
+  max-width: 520px;
+  max-height: 85vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+[data-theme="dark"] .settings-content {
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+}
+
+.settings-header {
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  padding: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.settings-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+.settings-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+/* Material Design Cards */
+.settings-section {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.settings-section:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+.settings-section:last-child {
+  margin-bottom: 0;
+}
+
+[data-theme="dark"] .settings-section {
+  background: #334155;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.settings-section h3 {
+  margin: 0 0 16px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text, #1f2937);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.settings-section h3::before {
+  content: "";
+  width: 4px;
+  height: 20px;
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-radius: 2px;
+}
+
+.setting-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+  gap: 12px;
+}
+
+.setting-item:hover {
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.setting-item:last-child {
+  margin-bottom: 0;
+}
+
+.setting-item label {
+  font-size: 0.95rem;
+  color: var(--color-text, #374151);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+/* Custom Checkbox */
+.setting-checkbox {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #d1d5db;
+  border-radius: 4px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0;
+}
+
+.setting-checkbox:checked {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+  border-color: #3b82f6;
+}
+
+.setting-checkbox:checked::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.setting-select {
+  padding: 12px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  color: var(--color-text, #374151);
+  font-size: 0.95rem;
+  min-width: 140px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.setting-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+[data-theme="dark"] .setting-select {
+  background: #475569;
+  border-color: #64748b;
+}
+
+.setting-description {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin-left: 8px;
+  opacity: 0.8;
+}
+
+/* System Actions Container */
+.system-actions {
+  display: grid;
+  gap: 12px;
+}
+
+/* System Action Buttons with Material Design */
+.action-btn {
+  padding: 16px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  justify-content: flex-start;
+  color: white;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+}
+
+.action-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background 0.2s ease;
+}
+
+.action-btn:hover::before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.action-icon {
+  font-size: 1.2rem;
+  z-index: 1;
+}
+
+.action-content {
+  flex: 1;
+  z-index: 1;
+}
+
+.action-title {
+  font-weight: 600;
+  margin-bottom: 2px;
+  font-size: 0.95rem;
+}
+
+.action-description {
+  font-size: 0.85rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* System Action Buttons with Material Design */
+.action-btn {
+  padding: 16px 20px;
+  border: none;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 160px;
+  justify-content: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0);
+  transition: background 0.2s ease;
+}
+
+.action-btn:hover::before {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.action-btn:hover {
+  transform: translateY(-2px);
+}
+
+.reload-btn {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.3);
+}
+
+.reload-btn:hover {
+  box-shadow: 0 8px 25px -5px rgba(16, 185, 129, 0.4);
+}
+
+.report-btn {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  box-shadow: 0 4px 14px 0 rgba(245, 158, 11, 0.3);
+}
+
+.report-btn:hover {
+  box-shadow: 0 8px 25px -5px rgba(245, 158, 11, 0.4);
+}
+
+.danger-btn {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.3);
+}
+
+.danger-btn:hover {
+  box-shadow: 0 8px 25px -5px rgba(239, 68, 68, 0.4);
+}
+
+.settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 24px;
+  background: rgba(248, 250, 252, 0.8);
+  border-top: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .settings-footer {
+  background: rgba(15, 23, 42, 0.8);
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+.btn-secondary {
+  padding: 12px 24px;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  background: white;
+  color: #374151;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  transform: translateY(-1px);
+}
+
+.btn-primary {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px -5px rgba(59, 130, 246, 0.4);
+}
+
+/* Debug Info */
+.debug-info {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #64748b);
+  margin-top: 16px;
+}
+
+[data-theme="dark"] .debug-info {
+  background: linear-gradient(135deg, #334155 0%, #1e293b 100%);
+  border-color: #475569;
+}
+
+.debug-info-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding: 4px 0;
+}
+
+.debug-info-item:last-child {
+  margin-bottom: 0;
+}
+
+.debug-info-label {
+  font-weight: 600;
+}
+
+.error-display {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.05) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 12px;
+  font-size: 0.85rem;
+  color: #dc2626;
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
+  word-break: break-all;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  .app-settings-panel {
+    --color-background: #1e293b;
+    --color-surface: #334155;
+    --color-text: #f1f5f9;
+    --color-text-secondary: #94a3b8;
+    --color-border: #475569;
+    --color-hover: #475569;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .settings-content {
+    border: 2px solid var(--color-text, #1f2937);
+  }
+
+  .action-btn,
+  .btn-primary,
+  .btn-secondary {
+    border: 2px solid currentColor;
+  }
+
+  .setting-checkbox {
+    border-width: 3px;
+  }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 640px) {
+  .settings-content {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .settings-header {
+    padding: 20px;
+  }
+
+  .settings-body {
+    padding: 20px;
+  }
+
+  .settings-footer {
+    padding: 20px;
+    flex-direction: column;
+  }
+
+  .btn-secondary,
+  .btn-primary {
+    width: 100%;
+  }
+
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .action-btn {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .setting-select {
+    width: 100%;
+  }
+}
+
+/* Smooth animations */
+* {
+  box-sizing: border-box;
+}
+
+.settings-section,
+.action-btn,
+.btn-primary,
+.btn-secondary,
+.setting-checkbox,
+.setting-select {
+  will-change: transform;
+}

@@ -1,12 +1,19 @@
 {
   "manifest_version": 3,
-  "name": "String to CSV converter",
-  "version": "2.5",
-  "description": "Converts String into CSV",
+  "name": "String to CSV Converter v3",
+  "version": "3.0.0",
+  "description": "Advanced data processing tool with batch operations, multi-column support, and accessibility features",
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "index-v3.html",
+    "default_title": "String to CSV Converter v3"
+  },
+  "background": {
+    "service_worker": "src/v3/background.js"
   },
   "permissions": ["storage"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
   "commands": {
     "_execute_action": {
       "suggested_key": {
@@ -15,5 +22,11 @@
       },
       "description": "Opens String to CSV converter"
     }
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["src/v3/workers/*.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
