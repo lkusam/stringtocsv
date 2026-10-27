@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!--
+  Store screenshot scene: the real extension popup (dist/chrome/index.html) shown over a
+  desktop browser window, with a caption. Rendered by snap.swift via render.sh.
+  Usage: desktop.html?scene=1..4   (viewport 1440x900)
+  Dark mode isn't shown: its text boxes stay white in v2.6.
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { width: 1440px; height: 900px; overflow: hidden; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        display: flex;
+        align-items: center;
+        padding: 0 64px;
+        gap: 56px;
+      }
+      body.light { --bg: linear-gradient(135deg, #e8f5ee 0%, #cfe9db 100%); --ink: #0f3d26; --sub: #2f6b4c; }
+      body.dark { --bg: linear-gradient(135deg, #10241a 0%, #0b1712 100%); --ink: #eaf7f0; --sub: #9fd1b5; }
+      .caption { width: 400px; flex: none; }
+      .caption img { width: 88px; height: 88px; margin-bottom: 28px; }
+      .caption h1 { font-size: 52px; line-height: 1.08; font-weight: 800; letter-spacing: -0.02em; }
+      .caption p { margin-top: 22px; font-size: 22px; line-height: 1.45; color: var(--sub); }
+
+      .window {
+        position: relative;
+        flex: 1;
+        height: 760px;
+        border-radius: 14px;
+        background: #ffffff;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+      body.dark .window { background: #1e1e1e; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.08); }
+      .toolbar {
+        height: 52px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 0 16px;
+        background: #f3f3f3;
+        border-bottom: 1px solid #dcdcdc;
+      }
+      body.dark .toolbar { background: #2b2b2b; border-color: #3a3a3a; }
+      .lights { display: flex; gap: 8px; }
+      .lights span { width: 12px; height: 12px; border-radius: 50%; }
+      .lights span:nth-child(1) { background: #ff5f57; }
+      .lights span:nth-child(2) { background: #febc2e; }
+      .lights span:nth-child(3) { background: #28c840; }
+      .url {
+        flex: 1;
+        height: 32px;
+        border-radius: 8px;
+        background: #ffffff;
+        border: 1px solid #d6d6d6;
+        display: flex;
+        align-items: center;
+        padding: 0 14px;
+        font-size: 14px;
+        color: #555;
+      }
+      body.dark .url { background: #1e1e1e; border-color: #444; color: #aaa; }
+      .ext-icon { width: 26px; height: 26px; border-radius: 6px; outline: 3px solid rgba(30, 127, 79, 0.35); }
+
+      .page { padding: 28px 32px; }
+      .page h2 { font-size: 22px; font-weight: 700; color: #222; margin-bottom: 18px; }
+      body.dark .page h2 { color: #eee; }
+      .row { display: flex; gap: 16px; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 15px; color: #444; }
+      body.dark .row { border-color: #333; color: #bbb; }
+      .row b { width: 120px; font-weight: 600; color: #1e7f4f; }
+      .row .bar { flex: 1; height: 10px; margin-top: 5px; border-radius: 5px; background: #e9e9e9; }
+      body.dark .row .bar { background: #333; }
+
+      .popup {
+        position: absolute;
+        top: 58px;
+        right: 14px;
+        width: 400px;
+        height: 600px;
+        border: 0;
+        border-radius: 12px;
+        background: #fff;
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body class="light">
+    <div class="caption">
+      <img src="../../icons/icon-128.png" alt="" />
+      <h1 id="title"></h1>
+      <p id="subtitle"></p>
+    </div>
+    <div class="window">
+      <div class="toolbar">
+        <div class="lights"><span></span><span></span><span></span></div>
+        <div class="url">crm.example.com/reports/open-orders</div>
+        <img class="ext-icon" src="../../icons/icon-48.png" alt="" />
+      </div>
+      <div class="page">
+        <h2>Open orders</h2>
+        <div id="rows"></div>
+      </div>
+      <iframe class="popup" id="popup" title="String to CSV popup"></iframe>
+    </div>
+
+    <script src="scenes.js"></script>
+  </body>
+</html>

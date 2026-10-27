@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!--
+  App Store screenshot scene for iPhone and iPad: caption on top, the real extension popup
+  shown as Safari's extension sheet over a sample page. Rendered by snap.swift via render.sh.
+  Usage: mobile.html?device=phone&scene=1..4   (viewport 440x956, rendered at 3x = 1320x2868)
+         mobile.html?device=tablet&scene=1..4  (viewport 1032x1376, rendered at 2x = 2064x2752)
+-->
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body { overflow: hidden; }
+      body {
+        --bg: linear-gradient(160deg, #e8f5ee 0%, #cfe9db 100%);
+        --ink: #0f3d26;
+        --sub: #2f6b4c;
+        font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+        background: var(--bg);
+        color: var(--ink);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      body.phone { width: 440px; height: 956px; padding: 64px 28px 0; }
+      body.tablet { width: 1032px; height: 1376px; padding: 96px 80px 0; }
+      .caption { text-align: center; }
+      .phone h1 { font-size: 34px; line-height: 1.12; font-weight: 800; letter-spacing: -0.02em; }
+      .phone p { margin-top: 14px; font-size: 17px; line-height: 1.4; color: var(--sub); }
+      .tablet h1 { font-size: 56px; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; }
+      .tablet p { margin: 20px auto 0; max-width: 760px; font-size: 24px; line-height: 1.4; color: var(--sub); }
+
+      .screen {
+        position: relative;
+        margin-top: 36px;
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(0, 0, 0, 0.06);
+      }
+      .phone .screen { width: 384px; flex: 1; border-radius: 44px 44px 0 0; }
+      .tablet .screen { width: 872px; flex: 1; margin-top: 56px; border-radius: 36px 36px 0 0; }
+
+      .page { padding: 28px 24px; color: #222; }
+      .page h2 { font-size: 22px; margin-bottom: 10px; }
+      .tablet .page { padding: 40px 48px; }
+      .tablet .page h2 { font-size: 30px; }
+      .row { display: flex; gap: 14px; padding: 12px 0; border-bottom: 1px solid #eee; font-size: 15px; }
+      .row b { width: 100px; color: #1e7f4f; }
+      .tablet .row { font-size: 19px; padding: 16px 0; }
+      .tablet .row b { width: 140px; }
+      .row .bar { flex: 1; height: 9px; margin-top: 5px; border-radius: 5px; background: #ececec; }
+
+      .dim { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.18); }
+      .sheet {
+        position: absolute;
+        left: 50%;
+        background: #fff;
+        overflow: hidden;
+        box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+      }
+      .phone .sheet { bottom: 0; width: 384px; height: 590px; margin-left: -192px; border-radius: 24px 24px 0 0; }
+      .tablet .sheet { top: 150px; width: 560px; height: 840px; margin-left: -280px; border-radius: 22px; }
+      .popup { width: 400px; height: 600px; border: 0; transform-origin: top left; }
+      .phone .popup { transform: scale(0.96); }
+      .tablet .popup { transform: scale(1.4); }
+    </style>
+  </head>
+  <body class="light">
+    <div class="caption">
+      <h1 id="title"></h1>
+      <p id="subtitle"></p>
+    </div>
+    <div class="screen">
+      <div class="page">
+        <h2>Open orders</h2>
+        <div id="rows"></div>
+      </div>
+      <div class="dim"></div>
+      <div class="sheet"><iframe class="popup" id="popup" title="String to CSV popup"></iframe></div>
+    </div>
+
+    <script>
+      document.body.classList.add(new URLSearchParams(location.search).get("device") || "phone");
+    </script>
+    <script src="scenes.js"></script>
+  </body>
+</html>

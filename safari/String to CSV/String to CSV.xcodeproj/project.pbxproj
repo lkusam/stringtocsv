@@ -603,7 +603,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RFAV6KVU4;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV Extension";
@@ -619,7 +620,7 @@
 					"-framework",
 					SafariServices,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV.Extension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byteseed.StringToCSV.Extension;
 				PRODUCT_NAME = "String to CSV Extension";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -636,7 +637,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RFAV6KVU4;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV Extension";
@@ -652,7 +654,7 @@
 					"-framework",
 					SafariServices,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV.Extension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byteseed.StringToCSV.Extension;
 				PRODUCT_NAME = "String to CSV Extension";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -672,7 +674,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RFAV6KVU4;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS (App)/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV";
@@ -693,7 +696,7 @@
 					"-framework",
 					WebKit,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byteseed.StringToCSV;
 				PRODUCT_NAME = "String to CSV";
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -712,7 +715,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RFAV6KVU4;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "iOS (App)/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV";
@@ -733,7 +737,7 @@
 					"-framework",
 					WebKit,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byteseed.StringToCSV;
 				PRODUCT_NAME = "String to CSV";
 				SDKROOT = iphoneos;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -751,7 +755,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RFAV6KVU4;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -770,7 +775,7 @@
 					"-framework",
 					SafariServices,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV.Extension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byteseed.StringToCSV.Extension;
 				PRODUCT_NAME = "String to CSV Extension";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -786,7 +791,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RFAV6KVU4;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
@@ -805,7 +811,7 @@
 					"-framework",
 					SafariServices,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV.Extension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byteseed.StringToCSV.Extension;
 				PRODUCT_NAME = "String to CSV Extension";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
@@ -823,7 +829,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RFAV6KVU4;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -846,7 +853,7 @@
 					"-framework",
 					WebKit,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byteseed.StringToCSV;
 				PRODUCT_NAME = "String to CSV";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;
@@ -865,7 +872,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2RFAV6KVU4;
+				CURRENT_PROJECT_VERSION = 2;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
@@ -888,7 +896,7 @@
 					"-framework",
 					WebKit,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV;
+				PRODUCT_BUNDLE_IDENTIFIER = com.byteseed.StringToCSV;
 				PRODUCT_NAME = "String to CSV";
 				REGISTER_APP_GROUPS = YES;
 				SDKROOT = macosx;

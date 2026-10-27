@@ -1,98 +1,78 @@
-# String to CSV Converter
+<p align="center">
+  <img src="icons/icon-128.png" width="96" height="96" alt="String to CSV icon" />
+</p>
 
-A modern and efficient browser extension for Chrome, Edge, Firefox and Safari to convert a string of IDs or values into a CSV (Comma-Separated Values) formatted string with advanced theming and customization options.
+<h1 align="center">String to CSV Converter</h1>
+
+<p align="center">
+  Paste a list of IDs or values and get a clean, quoted, comma-separated list instantly.<br />
+  A browser extension for Chrome, Edge, Firefox and Safari.
+</p>
+
+## Download
+
+| Browser | Get it |
+| --- | --- |
+| **Chrome** | [Chrome Web Store](https://chromewebstore.google.com/detail/string-to-csv-converter/hmjdjbmkhcdlnagembhlidibnlkdpmgo) |
+| **Edge** | Install from the [Chrome Web Store](https://chromewebstore.google.com/detail/string-to-csv-converter/hmjdjbmkhcdlnagembhlidibnlkdpmgo) (Edge supports Chrome extensions) |
+| **Firefox** (also LibreWolf, Zen, Waterfox, Floorp) | Firefox Add-ons: coming soon (in review) |
+| **Safari** on Mac, iPhone and iPad | App Store: coming soon (in review) |
+
+Every version's Chrome and Firefox zips are also attached to [GitHub Releases](https://github.com/lkusam/stringtocsv/releases).
+
+![Paste a list. Get clean CSV.](screenshots/chrome-web-store/01-paste-list-1280x800.png)
 
 ## Features
 
-### Core Functionality
+- **Live conversion**: output updates as you type or paste.
+- **Any separator**: split by new line, comma, space, or a custom separator (up to 5 characters).
+- **Quote style**: wrap each item in single (`''`) or double (`""`) quotes.
+- **Trim whitespace**: remove leading and trailing spaces from each item.
+- **Big inputs**: handles inputs of up to 15 million characters without freezing.
+- **One-click copy** and **Clear**.
+- **Themes**: Classic or Material, light or dark.
+- **Resizable popup**: drag the corner, or use `Ctrl/Cmd` `+` / `-` (and `0` to reset).
+- **Keyboard shortcut**: `Cmd+Shift+D` (Mac) or `Ctrl+Shift+D` (Windows/Linux) opens the popup.
+- **Remembers your settings** between sessions.
 
-- **Robust Live Conversion**: The output is updated automatically as you type or change settings. Optimized to handle large inputs efficiently without freezing the UI, and designed for a smooth startup experience.
-- **Multiple Separators**: Supports splitting the input string by new lines, commas, spaces, or custom separators.
-- **Customizable CSV Formatting**:
-  - Choose between single (`''`) or double (`""`) quotes for each item.
-  - Option to trim leading/trailing whitespace from each item.
-  - Custom separator support with visual feedback.
+| | |
+| --- | --- |
+| ![Your separator, your quotes](screenshots/chrome-web-store/02-separators-1280x800.png) | ![Built for big lists](screenshots/chrome-web-store/03-big-lists-1280x800.png) |
+| ![Private by design](screenshots/chrome-web-store/04-private-1280x800.png) | |
 
-### User Interface & Experience
+## How to use
 
-- **Modern Themes**: Choose between Classic and Material UI themes for different visual experiences.
-- **Dark Mode**: Toggle between light and dark themes for comfortable viewing in any environment. Your preference is remembered.
-- **Collapsible Settings**: Organized settings panel with expandable sections for better space utilization.
-- **Visual Feedback**: Dynamic icons and indicators show current separator and quote type selections.
-- **Resizable Interface**: Drag to resize the extension window to your preferred dimensions.
-- **Input Counter**: Real-time character and line count display for input monitoring.
+1. Click the String to CSV icon in your browser's toolbar, or press `Cmd+Shift+D` / `Ctrl+Shift+D`. In Safari on iPhone and iPad, open it from the page menu (the icon at the left of the address bar).
+2. Paste your values into **Input String**.
+3. Open **Conversion Options** to pick the separator and quote style.
+4. Click the gear icon for theme, dark mode and whitespace trimming.
+5. Click **Copy** to put the result on your clipboard.
 
-### Productivity Features
+**Example**: these lines
 
-- **One-Click Copy**: Easily copy the formatted CSV output to your clipboard with visual confirmation.
-- **Clear Output**: Quickly clear both input and output fields.
-- **Keyboard Shortcuts**:
-  - Open extension: `Command+Shift+D` (Mac) or `Ctrl+Shift+D` (Windows/Linux)
-  - Resize window: `Ctrl/Cmd + +/-` to increase/decrease size, `Ctrl/Cmd + 0` to reset
-- **Persistent Settings**: All preferences including separator, quote type, trim setting, theme, and window size are automatically saved and restored.
+```
+ORD-10421
+ORD-10422
+ORD-10437
+```
 
-### Advanced Features
+become
 
-- **Material Design 3**: Modern Material UI theme with dynamic color system and proper accessibility.
-- **Responsive Design**: Adapts to different window sizes and maintains usability across various screen dimensions.
-- **Error Handling**: Graceful error handling with user-friendly error messages.
-- **Performance Optimized**: Debounced input processing and efficient rendering for smooth performance.
+```
+'ORD-10421',
+'ORD-10422',
+'ORD-10437'
+```
 
-## How to Use
+## Privacy
 
-### Basic Usage
+Everything runs locally in your browser. The extension collects nothing, sends nothing anywhere, and only uses the browser's extension storage to remember your settings. Its only permission is `storage`. See the [privacy policy](https://lkusam.github.io/stringtocsv/privacy.html).
 
-1.  **Open the Extension**:
+---
 
-    - Click on the extension icon in your browser's toolbar.
-    - Or, use the keyboard shortcut: `Cmd+Shift+D` (Mac) / `Ctrl+Shift+D` (Windows).
+## Development
 
-2.  **Input Your Data**: Paste or type your string of values into the "Input String" text area. The character and line count will update in real-time.
-
-3.  **Configure Conversion Options** (click "Conversion Options" to expand):
-
-    - **Separator**: Select how to split your input:
-      - New Line (↵) - Split by line breaks
-      - Comma (,) - Split by commas
-      - Space (␣) - Split by spaces
-      - Custom... - Enter your own separator
-    - **Quote Type**: Choose the quote style:
-      - Single Quotes (') - Wrap items in single quotes
-      - Double Quotes (") - Wrap items in double quotes
-
-4.  **Adjust Settings** (click the gear icon):
-
-    - **Theme**: Choose between Classic or Material UI themes
-    - **Dark Mode**: Toggle between light and dark appearance
-    - **Trim Whitespace**: Remove leading/trailing spaces from each item
-
-5.  **View Results**: The formatted CSV string appears automatically in the "CSV Output" area as you type or change settings.
-
-6.  **Copy & Use**: Click the "Copy" button to copy the output to your clipboard. The button will show "Copied!" confirmation.
-
-7.  **Clear**: Click the "Clear" button to reset both input and output fields.
-
-### Advanced Features
-
-- **Window Resizing**: Drag the resize handle in the bottom-right corner to adjust window size, or use keyboard shortcuts (`Ctrl/Cmd + +/-`)
-- **Custom Separators**: When "Custom..." is selected, enter any character sequence up to 5 characters
-- **Visual Indicators**: Icons next to selectors show your current separator and quote type choices
-- **Persistent Preferences**: All your settings are automatically saved and restored between sessions
-
-## Installation
-
-### For Development
-
-To install this extension locally for development:
-
-1.  Clone or download this repository.
-2.  Open Google Chrome and navigate to `chrome://extensions`.
-3.  Enable "Developer mode" by toggling the switch in the top-right corner.
-4.  Click on the "Load unpacked" button.
-5.  Select the directory where you cloned or downloaded the extension files.
-6.  The "String to CSV Converter" extension should now appear in your list of extensions and be ready to use.
-
-### Building for Chrome, Firefox and Safari
+### Build
 
 Run `./build.sh`. It creates one folder per browser under `dist/` and zips the Chrome and Firefox builds:
 
@@ -105,9 +85,38 @@ dist/
 └── string-to-csv-converter-firefox-v<version>.zip
 ```
 
-- **Chrome / Edge**: load `dist/chrome` unpacked from `chrome://extensions` (Developer mode).
-- **Firefox** (and LibreWolf, Zen, Waterfox, Floorp): open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** and pick `dist/firefox/manifest.json`.
-- **Safari** (macOS and iOS): open `safari/String to CSV/String to CSV.xcodeproj` in Xcode. It packages the files in `dist/safari`, so run `./build.sh` before building or archiving.
+Try it locally:
+
+- **Chrome / Edge**: open `chrome://extensions`, turn on Developer mode, click **Load unpacked** and pick `dist/chrome`.
+- **Firefox**: open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** and pick `dist/firefox/manifest.json`.
+- **Safari**: open `safari/String to CSV/String to CSV.xcodeproj` in Xcode and run the macOS or iOS scheme. It packages `dist/safari`, so run `./build.sh` first.
+
+### Project layout
+
+```
+├── index.html, scripts.js, styles.css   # the popup
+├── manifest.json                        # source manifest (build.sh adapts it per browser)
+├── icons/                               # extension and app icons (icon.svg is the source)
+├── vendor/fontawesome/                  # bundled Font Awesome icon font
+├── build.sh                             # builds dist/<browser> and store zips
+├── safari/                              # Safari Web Extension Xcode project (macOS + iOS)
+├── screenshots/                         # store screenshots and the tools that render them
+└── docs/privacy.html                    # privacy policy (GitHub Pages)
+```
+
+### Store screenshots
+
+`screenshots/tools/render.sh` (macOS only) renders the real popup into captioned store images at each store's required size:
+
+| Folder | Size | Use for |
+| --- | --- | --- |
+| `screenshots/mac-app-store/` | 2880×1800 | Mac App Store |
+| `screenshots/iphone-app-store/` | 1320×2868 | App Store, iPhone 6.9″ |
+| `screenshots/ipad-app-store/` | 2064×2752 | App Store, iPad 13″ |
+| `screenshots/chrome-web-store/` | 1280×800 | Chrome Web Store, Edge Add-ons |
+| `screenshots/firefox-addons/` | 1280×800 | Firefox Add-ons |
+
+Captions and sample data live in `screenshots/tools/scenes.js`. Only the Chrome set is committed (the README uses it); run `render.sh` to recreate the rest.
 
 ## Releasing
 
@@ -115,7 +124,7 @@ Store uploads are manual. GitHub Actions only builds the zips.
 
 1. Bump `version` in `manifest.json` and merge to `main`.
 2. The **Build Release Zips** workflow runs `./build.sh` and creates a GitHub release `v<version>` with the Chrome and Firefox zips attached. If that version's release already exists, it builds but doesn't publish anything.
-3. Download the zips from the release and upload them:
+3. Download the zips from the release and upload them to each store, as described below.
 
 ### Chrome
 
@@ -127,87 +136,33 @@ addons.mozilla.org → Developer Hub → **My Add-ons** → String to CSV conver
 
 ### Safari
 
-Each release is archived and uploaded from Xcode on a Mac.
-
-One-time setup:
-
-1. Join the Apple Developer Program.
-2. In App Store Connect, create a new app for macOS and iOS with bundle ID `com.lkusam.StringToCSV`. Register `com.lkusam.StringToCSV` and `com.lkusam.StringToCSV.Extension` under Certificates, Identifiers & Profiles if they aren't offered.
-3. Open the Xcode project and, under Signing & Capabilities, select your team for all four targets.
-
-For each release:
+Each release is archived and uploaded from Xcode on a Mac. The project is set to the BYTESEED LLC team (`2RFAV6KVU4`) with automatic signing and bundle IDs `com.byteseed.StringToCSV` / `com.byteseed.StringToCSV.Extension`, so Xcode → Settings → Accounts must be signed in to an Apple ID on that team.
 
 1. Merge the version bump to `main` and pull it, then run `./build.sh`.
-2. In Xcode, set **Version** (MARKETING_VERSION) to the manifest version on all four targets. Increase **Build** (CURRENT_PROJECT_VERSION) on all four targets; every upload needs a new build number.
+2. In Xcode, set **Version** (MARKETING_VERSION) to the manifest version on all four targets, and increase **Build** (CURRENT_PROJECT_VERSION). Every upload needs a new build number.
 3. Select the **String to CSV (macOS)** scheme, run **Product → Archive**, then in the Organizer choose **Distribute App → App Store Connect → Upload**.
 4. Repeat with the **String to CSV (iOS)** scheme and the **Any iOS Device** destination.
-5. In App Store Connect, complete the listing (screenshots, description, support URL, privacy policy `https://lkusam.github.io/stringtocsv/privacy.html`, App Privacy: Data Not Collected), select the uploaded build, and **Submit for Review**.
-
-## Technical Details
-
-### Browser Compatibility
-
-- **Chrome / Edge**: Fully supported (Manifest V3)
-- **Firefox**: Supported from Firefox 140 (also LibreWolf, Zen, Waterfox, Floorp)
-- **Safari**: Supported on macOS and iOS via the Xcode project in `safari/`
-- **Performance**: Optimized for inputs up to 15 million characters
-
-### Architecture
-
-- **Frontend**: Vanilla JavaScript with modern ES6+ features
-- **Styling**: CSS3 with CSS Custom Properties for theming
-- **Storage**: WebExtension `storage.sync` API for settings persistence
-- **Performance**: Debounced input processing and efficient DOM manipulation
-
-### File Structure
-
-```
-├── index.html          # Main popup interface
-├── scripts.js          # Core functionality and event handling
-├── styles.css          # Styling and theme definitions
-├── manifest.json       # Extension configuration (Chrome, Firefox, Safari)
-├── icons/              # Extension and app icons (icon.svg is the source)
-├── vendor/fontawesome/ # Bundled Font Awesome icon font
-├── build.sh            # Builds dist/<browser> folders and store zips
-├── safari/             # Safari Web Extension Xcode project (macOS + iOS)
-├── docs/privacy.html   # Privacy policy (served via GitHub Pages)
-└── README.md           # Documentation
-```
+5. In App Store Connect, select the new build for each platform and **Submit for Review**.
 
 ## Changelog
 
 ### v2.6
 
-- **Firefox and Safari support**: Firefox add-on settings, Safari Xcode project, shared `build.sh`
-- **Extension icons**: New toolbar and store icons
-- **Offline icons**: Font Awesome is bundled instead of loaded from a CDN
-- **Cleanup**: Removed debug logging (including logging of input text) and unused files
+- Firefox and Safari (Mac, iPhone, iPad) support
+- New toolbar and store icons
+- Font Awesome bundled, so icons work offline
+- Removed debug logging (including logging of input text) and unused files
 
 ### v2.5
 
-- **Enhanced UI/UX**: Added Material Design 3 theme with modern styling
-- **Improved Accessibility**: Better contrast ratios and keyboard navigation
-- **Resizable Interface**: Drag-to-resize functionality with size persistence
-- **Visual Feedback**: Dynamic icons and real-time input counters
-- **Performance Optimization**: Improved handling of large inputs
-- **Settings Organization**: Collapsible sections for better space management
-- **Theme System**: Comprehensive theming with light/dark mode support
+- Material Design 3 theme, light/dark modes
+- Drag-to-resize popup with size memory
+- Live character and line counters
+- Better handling of large inputs
 
-### Previous Versions
+### Earlier
 
-- **v1.0**: Initial release with basic conversion functionality
-- **v1.1**: Added dark mode and settings persistence
-- **v1.2**: Introduced custom separators and improved error handling
-- **v1.3**: Enhanced performance and added keyboard shortcuts
-
-## Privacy & Security
-
-Your privacy is important. This extension:
-
-- **Processes all data locally** on your machine
-- **Does not collect, store, or transmit** any of your data to external servers
-- **Only uses the browser's extension storage API** to save your preferences locally
-- **Requires no special permissions** beyond basic extension functionality
-- **Open source** - all code is transparent and auditable
-
-For more details, please see our Privacy Policy.
+- **v1.3**: performance improvements and keyboard shortcuts
+- **v1.2**: custom separators and better error handling
+- **v1.1**: dark mode and saved settings
+- **v1.0**: first release
