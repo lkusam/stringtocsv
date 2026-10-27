@@ -111,8 +111,7 @@ Try it locally:
 | Folder | Size | Use for |
 | --- | --- | --- |
 | `screenshots/mac-app-store/` | 2880×1800 | Mac App Store |
-| `screenshots/iphone-app-store/` | 1320×2868 or 1290×2796 | App Store, iPhone 6.9″ |
-| `screenshots/iphone-app-store/` | 1284×2778 or 1242×2688 | App Store, iPhone 6.5″ |
+| `screenshots/iphone-app-store/` | 1290×2796 | App Store, iPhone 6.9″ |
 | `screenshots/ipad-app-store/` | 2064×2752 or 2048×2732 | App Store, iPad 13″ |
 | `screenshots/chrome-web-store/` | 1280×800 | Chrome Web Store, Edge Add-ons |
 | `screenshots/firefox-addons/` | 1280×800 | Firefox Add-ons |
