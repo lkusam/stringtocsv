@@ -3,3 +3,7 @@ dist/
 *.xcuserstate
 xcuserdata/
 safari/**/build/
+screenshots/mac-app-store/
+screenshots/iphone-app-store/
+screenshots/ipad-app-store/
+screenshots/firefox-addons/
