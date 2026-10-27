@@ -1,12 +1,7 @@
-name: Publish Extension (Chrome, Firefox, Safari)
+name: Build Release Zips
 
 on:
   workflow_dispatch:
-    inputs:
-      republish:
-        description: "Re-send the current version to the stores even if its GitHub release already exists"
-        type: boolean
-        default: false
   push:
     branches:
       - main
@@ -17,20 +12,14 @@ on:
       - "styles.css"
       - "icons/**"
       - "vendor/**"
-      - "safari/**"
+      - "build.sh"
 
 permissions:
   contents: write
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
-    outputs:
-      version: ${{ steps.manifest_version.outputs.version }}
-      tag_exists: ${{ steps.check_tag.outputs.tag_exists }}
-      should_publish: ${{ steps.check_tag.outputs.tag_exists == 'false' || inputs.republish }}
-    env:
-      AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
 
     steps:
       - name: Checkout code
@@ -50,51 +39,28 @@ jobs:
         run: |
           if git rev-parse "v${{ steps.manifest_version.outputs.version }}" >/dev/null 2>&1; then
             echo "tag_exists=true" >> $GITHUB_OUTPUT
-            echo "Tag v${{ steps.manifest_version.outputs.version }} already exists"
+            echo "Tag v${{ steps.manifest_version.outputs.version }} already exists; bump the version in manifest.json to make a new release"
           else
             echo "tag_exists=false" >> $GITHUB_OUTPUT
-            echo "Tag v${{ steps.manifest_version.outputs.version }} does not exist"
           fi
 
-      - name: Package Extension
-        run: |
-          ./build.sh
-
-          # Create the zip file
-          cd dist
-          zip -r ../string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip .
-          cd ..
-
-          # Also create a generic name for latest release
-          cp string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip string-to-csv-converter-latest.zip
-
-      - name: Lint and build Firefox add-on
-        run: |
-          npx --yes web-ext@8 lint --source-dir dist --self-hosted=false
-          npx --yes web-ext@8 build --source-dir dist --artifacts-dir web-ext-artifacts \
-            --filename string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip
+      - name: Build Chrome and Firefox zips
+        run: ./build.sh
 
       - name: Generate Release Notes
-        id: release_notes
         run: |
           cat > release_notes.md << 'EOF'
           ## String to CSV Converter v${{ steps.manifest_version.outputs.version }}
 
-          ### What's new
-          - Firefox and Safari support (Firefox add-on zip attached below)
-          - New extension icons
-          - Font Awesome bundled locally, so icons work offline
-          - Removed debug logging and unused files
+          | Store | File | Upload at |
+          | --- | --- | --- |
+          | Chrome Web Store (also Edge Add-ons) | `string-to-csv-converter-chrome-v${{ steps.manifest_version.outputs.version }}.zip` | Chrome Web Store Developer Dashboard → Package → Upload new package |
+          | Firefox Add-ons | `string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip` | addons.mozilla.org Developer Hub → Manage → Upload New Version |
+          | Safari | Archive from Xcode | See "Safari" under "Releasing" in the README |
 
-          ### 📦 Installation
-          - **Chrome / Edge**: download `string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip`, extract it, open `chrome://extensions/`, enable Developer mode and click "Load unpacked"
-          - **Firefox**: install from addons.mozilla.org (the attached Firefox zip is the unsigned store upload)
-          - **Safari**: install from the Mac App Store / App Store
-
-          ### 🔗 Links
-          - [Chrome Web Store](https://chrome.google.com/webstore) (if published)
-          - [GitHub Repository](https://github.com/${{ github.repository }})
-          - [Documentation](https://github.com/${{ github.repository }}#readme)
+          ### Load unpacked for testing
+          - **Chrome / Edge**: extract the Chrome zip, open `chrome://extensions/`, enable Developer mode and click "Load unpacked"
+          - **Firefox**: open `about:debugging#/runtime/this-firefox` → "Load Temporary Add-on…" and pick the Firefox zip
           EOF
 
       - name: Create GitHub Release
@@ -104,118 +70,6 @@ jobs:
           tag_name: v${{ steps.manifest_version.outputs.version }}
           name: String to CSV Converter v${{ steps.manifest_version.outputs.version }}
           body_path: release_notes.md
-          draft: false
-          prerelease: false
           files: |
-            string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip
-            string-to-csv-converter-latest.zip
-            web-ext-artifacts/string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip
-
-      - name: Upload to Chrome Web Store (Optional)
-        id: chrome_upload
-        if: steps.check_tag.outputs.tag_exists == 'false' || inputs.republish
-        continue-on-error: true # still try Firefox and Safari if Chrome fails; the job is failed at the end
-        uses: mnao305/chrome-extension-upload@v7.0.0
-        with:
-          file-path: string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip
-          extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
-          publisher-id: ${{ secrets.CHROME_PUBLISHER_ID }}
-          client-id: ${{ secrets.CHROME_CLIENT_ID }}
-          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          publish: true
-        env:
-          CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
-
-      - name: Submit to Firefox Add-ons (Optional)
-        if: (steps.check_tag.outputs.tag_exists == 'false' || inputs.republish) && env.AMO_JWT_ISSUER != ''
-        run: |
-          npx --yes web-ext@8 sign --source-dir dist --channel listed \
-            --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
-        env:
-          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
-
-      - name: Fail if Chrome upload failed
-        if: steps.chrome_upload.outcome == 'failure'
-        run: |
-          echo "::error::Chrome Web Store upload failed. Fix it, then re-run this workflow with 'republish' ticked."
-          exit 1
-
-      - name: Output Results
-        run: |
-          echo "✅ Build completed for version ${{ steps.manifest_version.outputs.version }}"
-          echo "📦 Package: string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip"
-          if [ "${{ steps.check_tag.outputs.tag_exists }}" = "true" ]; then
-            echo "ℹ️  Release already exists for this version"
-          else
-            echo "🎉 New release created: v${{ steps.manifest_version.outputs.version }}"
-          fi
-
-  safari:
-    needs: publish
-    if: ${{ !cancelled() && needs.publish.outputs.should_publish == 'true' }}
-    runs-on: macos-latest
-    env:
-      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
-      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
-      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
-      VERSION: ${{ needs.publish.outputs.version }}
-      PROJECT: safari/String to CSV/String to CSV.xcodeproj
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Select latest Xcode
-        uses: maxim-lobanov/setup-xcode@v1
-        with:
-          xcode-version: latest-stable
-
-      - name: Build extension files
-        run: ./build.sh
-
-      - name: Build Safari app (unsigned check)
-        if: env.ASC_KEY_ID == ''
-        run: |
-          xcodebuild build -project "$PROJECT" -scheme "String to CSV (macOS)" \
-            -destination "generic/platform=macOS" CODE_SIGNING_ALLOWED=NO \
-            MARKETING_VERSION="$VERSION"
-          echo "ℹ️  App Store Connect secrets not set; skipped archive and upload"
-
-      - name: Archive and upload to App Store Connect
-        if: env.ASC_KEY_ID != ''
-        env:
-          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
-        run: |
-          KEY_PATH="$RUNNER_TEMP/AuthKey_$ASC_KEY_ID.p8"
-          printf '%s' "$ASC_PRIVATE_KEY" > "$KEY_PATH"
-          AUTH=(-allowProvisioningUpdates
-                -authenticationKeyPath "$KEY_PATH"
-                -authenticationKeyID "$ASC_KEY_ID"
-                -authenticationKeyIssuerID "$ASC_ISSUER_ID")
-
-          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
-          <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-          <plist version="1.0">
-          <dict>
-            <key>method</key><string>app-store-connect</string>
-            <key>destination</key><string>upload</string>
-            <key>teamID</key><string>$APPLE_TEAM_ID</string>
-            <key>signingStyle</key><string>automatic</string>
-          </dict>
-          </plist>
-          PLIST
-
-          for PLATFORM in macOS iOS; do
-            ARCHIVE="$RUNNER_TEMP/StringToCSV-$PLATFORM.xcarchive"
-            xcodebuild archive -project "$PROJECT" -scheme "String to CSV ($PLATFORM)" \
-              -destination "generic/platform=$PLATFORM" -archivePath "$ARCHIVE" \
-              DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
-              MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
-              "${AUTH[@]}"
-            xcodebuild -exportArchive -archivePath "$ARCHIVE" \
-              -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
-              -exportPath "$RUNNER_TEMP/export-$PLATFORM" "${AUTH[@]}"
-          done
-          echo "🎉 Uploaded Safari v$VERSION (build ${{ github.run_number }}) to App Store Connect"
+            dist/string-to-csv-converter-chrome-v${{ steps.manifest_version.outputs.version }}.zip
+            dist/string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip

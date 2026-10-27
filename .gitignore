@@ -1,6 +1,5 @@
 .vscode
 dist/
-web-ext-artifacts/
 *.xcuserstate
 xcuserdata/
 safari/**/build/

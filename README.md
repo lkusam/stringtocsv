@@ -94,11 +94,54 @@ To install this extension locally for development:
 
 ### Building for Chrome, Firefox and Safari
 
-Run `./build.sh` to assemble the shippable extension into `dist/`. Every browser target packages from that folder.
+Run `./build.sh`. It creates one folder per browser under `dist/` and zips the Chrome and Firefox builds:
 
-- **Chrome / Edge**: load `dist/` unpacked, or zip it for the Chrome Web Store.
-- **Firefox** (and LibreWolf, Zen, Waterfox, Floorp): `npx web-ext lint --source-dir dist`, then `npx web-ext run --source-dir dist` to try it, or `npx web-ext build --source-dir dist` to produce the upload zip for addons.mozilla.org.
-- **Safari** (macOS and iOS): run `./build.sh`, then open `safari/String to CSV/String to CSV.xcodeproj` in Xcode. The project references the files in `dist/`, so rebuild `dist/` before archiving. Set your signing team, then Product → Archive to upload to App Store Connect.
+```
+dist/
+├── chrome/                                   # load unpacked in Chrome / Edge
+├── firefox/                                  # includes the Firefox-only manifest settings
+├── safari/                                   # packaged by the Safari Xcode project
+├── string-to-csv-converter-chrome-v<version>.zip
+└── string-to-csv-converter-firefox-v<version>.zip
+```
+
+- **Chrome / Edge**: load `dist/chrome` unpacked from `chrome://extensions` (Developer mode).
+- **Firefox** (and LibreWolf, Zen, Waterfox, Floorp): open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** and pick `dist/firefox/manifest.json`.
+- **Safari** (macOS and iOS): open `safari/String to CSV/String to CSV.xcodeproj` in Xcode. It packages the files in `dist/safari`, so run `./build.sh` before building or archiving.
+
+## Releasing
+
+Store uploads are manual. GitHub Actions only builds the zips.
+
+1. Bump `version` in `manifest.json` and merge to `main`.
+2. The **Build Release Zips** workflow runs `./build.sh` and creates a GitHub release `v<version>` with the Chrome and Firefox zips attached. If that version's release already exists, it builds but doesn't publish anything.
+3. Download the zips from the release and upload them:
+
+### Chrome
+
+Chrome Web Store Developer Dashboard → select the item → **Package** → **Upload new package** → choose `string-to-csv-converter-chrome-v<version>.zip` → **Submit for review**.
+
+### Firefox
+
+addons.mozilla.org → Developer Hub → **My Add-ons** → String to CSV converter → **Upload New Version** → choose `string-to-csv-converter-firefox-v<version>.zip` → answer **No** to the source code question → add release notes → **Submit Version**.
+
+### Safari
+
+Each release is archived and uploaded from Xcode on a Mac.
+
+One-time setup:
+
+1. Join the Apple Developer Program.
+2. In App Store Connect, create a new app for macOS and iOS with bundle ID `com.lkusam.StringToCSV`. Register `com.lkusam.StringToCSV` and `com.lkusam.StringToCSV.Extension` under Certificates, Identifiers & Profiles if they aren't offered.
+3. Open the Xcode project and, under Signing & Capabilities, select your team for all four targets.
+
+For each release:
+
+1. Merge the version bump to `main` and pull it, then run `./build.sh`.
+2. In Xcode, set **Version** (MARKETING_VERSION) to the manifest version on all four targets. Increase **Build** (CURRENT_PROJECT_VERSION) on all four targets; every upload needs a new build number.
+3. Select the **String to CSV (macOS)** scheme, run **Product → Archive**, then in the Organizer choose **Distribute App → App Store Connect → Upload**.
+4. Repeat with the **String to CSV (iOS)** scheme and the **Any iOS Device** destination.
+5. In App Store Connect, complete the listing (screenshots, description, support URL, privacy policy `https://lkusam.github.io/stringtocsv/privacy.html`, App Privacy: Data Not Collected), select the uploaded build, and **Submit for Review**.
 
 ## Technical Details
 
@@ -125,7 +168,7 @@ Run `./build.sh` to assemble the shippable extension into `dist/`. Every browser
 ├── manifest.json       # Extension configuration (Chrome, Firefox, Safari)
 ├── icons/              # Extension and app icons (icon.svg is the source)
 ├── vendor/fontawesome/ # Bundled Font Awesome icon font
-├── build.sh            # Assembles dist/ for every browser target
+├── build.sh            # Builds dist/<browser> folders and store zips
 ├── safari/             # Safari Web Extension Xcode project (macOS + iOS)
 ├── docs/privacy.html   # Privacy policy (served via GitHub Pages)
 └── README.md           # Documentation
