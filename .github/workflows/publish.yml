@@ -2,6 +2,11 @@ name: Publish Extension (Chrome, Firefox, Safari)
 
 on:
   workflow_dispatch:
+    inputs:
+      republish:
+        description: "Re-send the current version to the stores even if its GitHub release already exists"
+        type: boolean
+        default: false
   push:
     branches:
       - main
@@ -23,6 +28,7 @@ jobs:
     outputs:
       version: ${{ steps.manifest_version.outputs.version }}
       tag_exists: ${{ steps.check_tag.outputs.tag_exists }}
+      should_publish: ${{ steps.check_tag.outputs.tag_exists == 'false' || inputs.republish }}
     env:
       AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
 
@@ -106,11 +112,14 @@ jobs:
             web-ext-artifacts/string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip
 
       - name: Upload to Chrome Web Store (Optional)
-        if: steps.check_tag.outputs.tag_exists == 'false'
-        uses: mnao305/chrome-extension-upload@v5.0.0
+        id: chrome_upload
+        if: steps.check_tag.outputs.tag_exists == 'false' || inputs.republish
+        continue-on-error: true # still try Firefox and Safari if Chrome fails; the job is failed at the end
+        uses: mnao305/chrome-extension-upload@v7.0.0
         with:
           file-path: string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip
           extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
+          publisher-id: ${{ secrets.CHROME_PUBLISHER_ID }}
           client-id: ${{ secrets.CHROME_CLIENT_ID }}
           client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
           refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
@@ -119,12 +128,18 @@ jobs:
           CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
 
       - name: Submit to Firefox Add-ons (Optional)
-        if: steps.check_tag.outputs.tag_exists == 'false' && env.AMO_JWT_ISSUER != ''
+        if: (steps.check_tag.outputs.tag_exists == 'false' || inputs.republish) && env.AMO_JWT_ISSUER != ''
         run: |
           npx --yes web-ext@8 sign --source-dir dist --channel listed \
             --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
         env:
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+
+      - name: Fail if Chrome upload failed
+        if: steps.chrome_upload.outcome == 'failure'
+        run: |
+          echo "::error::Chrome Web Store upload failed. Fix it, then re-run this workflow with 'republish' ticked."
+          exit 1
 
       - name: Output Results
         run: |
@@ -138,7 +153,7 @@ jobs:
 
   safari:
     needs: publish
-    if: needs.publish.outputs.tag_exists == 'false'
+    if: ${{ !cancelled() && needs.publish.outputs.should_publish == 'true' }}
     runs-on: macos-latest
     env:
       ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
