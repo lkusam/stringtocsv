@@ -132,8 +132,8 @@ Each release is archived and uploaded from Xcode on a Mac.
 One-time setup:
 
 1. Join the Apple Developer Program.
-2. In App Store Connect, create a new app for macOS and iOS with bundle ID `com.lkusam.StringToCSV`. Register `com.lkusam.StringToCSV` and `com.lkusam.StringToCSV.Extension` under Certificates, Identifiers & Profiles if they aren't offered.
-3. Open the Xcode project and, under Signing & Capabilities, select your team for all four targets.
+2. In App Store Connect, create a new app for macOS and iOS with bundle ID `com.byteseed.StringToCSV`. Register `com.byteseed.StringToCSV` and `com.byteseed.StringToCSV.Extension` under Certificates, Identifiers & Profiles if they aren't offered.
+3. The Xcode project is already set to the BYTESEED LLC team (`2RFAV6KVU4`) with automatic signing. Make sure Xcode → Settings → Accounts is signed in to an Apple ID on that team.
 
 For each release:
 
