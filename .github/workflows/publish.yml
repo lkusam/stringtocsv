@@ -125,8 +125,15 @@ jobs:
       - name: Submit to Firefox Add-ons (Optional)
         if: (steps.check_tag.outputs.tag_exists == 'false' || inputs.republish) && env.AMO_JWT_ISSUER != ''
         run: |
+          set +e
           npx --yes web-ext@8 sign --source-dir dist --channel listed \
-            --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
+            --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET" 2>&1 | tee amo.log
+          STATUS=${PIPESTATUS[0]}
+          if [ "$STATUS" -ne 0 ] && grep -qi "already exists" amo.log; then
+            echo "::notice::Firefox v${{ steps.manifest_version.outputs.version }} is already on AMO; nothing to submit."
+            exit 0
+          fi
+          exit $STATUS
         env:
           AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
 
