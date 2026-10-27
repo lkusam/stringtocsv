@@ -1,4 +1,4 @@
-name: Publish Chrome Extension
+name: Publish Extension (Chrome, Firefox, Safari)
 
 on:
   workflow_dispatch:
@@ -10,6 +10,9 @@ on:
       - "index.html"
       - "scripts.js"
       - "styles.css"
+      - "icons/**"
+      - "vendor/**"
+      - "safari/**"
 
 permissions:
   contents: write
@@ -17,10 +20,17 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.manifest_version.outputs.version }}
+      tag_exists: ${{ steps.check_tag.outputs.tag_exists }}
+    env:
+      AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed so the tag check below can see existing tags
 
       - name: Read version from manifest.json
         id: manifest_version
@@ -42,15 +52,7 @@ jobs:
 
       - name: Package Extension
         run: |
-          # Create dist directory
-          mkdir -p dist
-
-          # Copy extension files (excluding development files)
-          cp manifest.json dist/
-          cp index.html dist/
-          cp scripts.js dist/
-          cp styles.css dist/
-          cp README.md dist/
+          ./build.sh
 
           # Create the zip file
           cd dist
@@ -60,36 +62,28 @@ jobs:
           # Also create a generic name for latest release
           cp string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip string-to-csv-converter-latest.zip
 
+      - name: Lint and build Firefox add-on
+        run: |
+          npx --yes web-ext@8 lint --source-dir dist --self-hosted=false
+          npx --yes web-ext@8 build --source-dir dist --artifacts-dir web-ext-artifacts \
+            --filename string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip
+
       - name: Generate Release Notes
         id: release_notes
         run: |
           cat > release_notes.md << 'EOF'
           ## String to CSV Converter v${{ steps.manifest_version.outputs.version }}
 
-          ### 🎨 New Features
-          - **Enhanced UI/UX**: Added Material Design 3 theme with modern styling
-          - **Resizable Interface**: Drag-to-resize functionality with size persistence
-          - **Visual Feedback**: Dynamic icons and real-time input counters
-          - **Collapsible Settings**: Organized settings panel with expandable sections
-
-          ### 🚀 Improvements
-          - **Performance Optimization**: Improved handling of large inputs (up to 15M characters)
-          - **Better Accessibility**: Enhanced contrast ratios and keyboard navigation
-          - **Theme System**: Comprehensive theming with light/dark mode support
-          - **Settings Organization**: Better space management and user experience
-
-          ### 🔧 Technical Updates
-          - Modern ES6+ JavaScript implementation
-          - CSS3 with CSS Custom Properties for theming
-          - Debounced input processing for smooth performance
-          - Enhanced error handling and user feedback
+          ### What's new
+          - Firefox and Safari support (Firefox add-on zip attached below)
+          - New extension icons
+          - Font Awesome bundled locally, so icons work offline
+          - Removed debug logging and unused files
 
           ### 📦 Installation
-          1. Download the `string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip` file
-          2. Extract the contents
-          3. Open Chrome and go to `chrome://extensions/`
-          4. Enable "Developer mode"
-          5. Click "Load unpacked" and select the extracted folder
+          - **Chrome / Edge**: download `string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip`, extract it, open `chrome://extensions/`, enable Developer mode and click "Load unpacked"
+          - **Firefox**: install from addons.mozilla.org (the attached Firefox zip is the unsigned store upload)
+          - **Safari**: install from the Mac App Store / App Store
 
           ### 🔗 Links
           - [Chrome Web Store](https://chrome.google.com/webstore) (if published)
@@ -109,6 +103,7 @@ jobs:
           files: |
             string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip
             string-to-csv-converter-latest.zip
+            web-ext-artifacts/string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip
 
       - name: Upload to Chrome Web Store (Optional)
         if: steps.check_tag.outputs.tag_exists == 'false'
@@ -123,6 +118,14 @@ jobs:
         env:
           CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
 
+      - name: Submit to Firefox Add-ons (Optional)
+        if: steps.check_tag.outputs.tag_exists == 'false' && env.AMO_JWT_ISSUER != ''
+        run: |
+          npx --yes web-ext@8 sign --source-dir dist --channel listed \
+            --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
+        env:
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+
       - name: Output Results
         run: |
           echo "✅ Build completed for version ${{ steps.manifest_version.outputs.version }}"
@@ -132,3 +135,72 @@ jobs:
           else
             echo "🎉 New release created: v${{ steps.manifest_version.outputs.version }}"
           fi
+
+  safari:
+    needs: publish
+    if: needs.publish.outputs.tag_exists == 'false'
+    runs-on: macos-latest
+    env:
+      ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+      ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      VERSION: ${{ needs.publish.outputs.version }}
+      PROJECT: safari/String to CSV/String to CSV.xcodeproj
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Select latest Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Build extension files
+        run: ./build.sh
+
+      - name: Build Safari app (unsigned check)
+        if: env.ASC_KEY_ID == ''
+        run: |
+          xcodebuild build -project "$PROJECT" -scheme "String to CSV (macOS)" \
+            -destination "generic/platform=macOS" CODE_SIGNING_ALLOWED=NO \
+            MARKETING_VERSION="$VERSION"
+          echo "ℹ️  App Store Connect secrets not set; skipped archive and upload"
+
+      - name: Archive and upload to App Store Connect
+        if: env.ASC_KEY_ID != ''
+        env:
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+        run: |
+          KEY_PATH="$RUNNER_TEMP/AuthKey_$ASC_KEY_ID.p8"
+          printf '%s' "$ASC_PRIVATE_KEY" > "$KEY_PATH"
+          AUTH=(-allowProvisioningUpdates
+                -authenticationKeyPath "$KEY_PATH"
+                -authenticationKeyID "$ASC_KEY_ID"
+                -authenticationKeyIssuerID "$ASC_ISSUER_ID")
+
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$APPLE_TEAM_ID</string>
+            <key>signingStyle</key><string>automatic</string>
+          </dict>
+          </plist>
+          PLIST
+
+          for PLATFORM in macOS iOS; do
+            ARCHIVE="$RUNNER_TEMP/StringToCSV-$PLATFORM.xcarchive"
+            xcodebuild archive -project "$PROJECT" -scheme "String to CSV ($PLATFORM)" \
+              -destination "generic/platform=$PLATFORM" -archivePath "$ARCHIVE" \
+              DEVELOPMENT_TEAM="$APPLE_TEAM_ID" \
+              MARKETING_VERSION="$VERSION" CURRENT_PROJECT_VERSION="${{ github.run_number }}" \
+              "${AUTH[@]}"
+            xcodebuild -exportArchive -archivePath "$ARCHIVE" \
+              -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+              -exportPath "$RUNNER_TEMP/export-$PLATFORM" "${AUTH[@]}"
+          done
+          echo "🎉 Uploaded Safari v$VERSION (build ${{ github.run_number }}) to App Store Connect"
