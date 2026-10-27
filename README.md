@@ -111,13 +111,12 @@ Try it locally:
 | Folder | Size | Use for |
 | --- | --- | --- |
 | `screenshots/mac-app-store/` | 2880×1800 | Mac App Store |
-| `screenshots/iphone-app-store/` | 1320×2868 or 1290×2796 | App Store, iPhone 6.9″ |
-| `screenshots/iphone-app-store/` | 1284×2778 or 1242×2688 | App Store, iPhone 6.5″ |
+| `screenshots/iphone-app-store/` | 1206×2622 | App Store, iPhone with Dynamic Island (medium), the required iPhone slot |
 | `screenshots/ipad-app-store/` | 2064×2752 or 2048×2732 | App Store, iPad 13″ |
 | `screenshots/chrome-web-store/` | 1280×800 | Chrome Web Store, Edge Add-ons |
 | `screenshots/firefox-addons/` | 1280×800 | Firefox Add-ons |
 
-Captions and sample data live in `screenshots/tools/scenes.js`. Only the Chrome set is committed (the README uses it); run `render.sh` to recreate the rest.
+Captions and sample data live in `screenshots/tools/scenes.js`. Apple doesn't allow URLs in screenshots, so the browser scenes show a page title instead of an address. Only the Chrome set is committed (the README uses it); run `render.sh` to recreate the rest.
 
 ## Releasing
 

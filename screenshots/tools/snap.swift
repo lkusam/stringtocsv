@@ -12,9 +12,12 @@ guard args.count == 6, let url = URL(string: args[1]),
 let out = args[5]
 
 let app = NSApplication.shared
-let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: cssW * scale, height: cssH * scale))
+// Non-persistent store and no cache, so edits to the scene pages always show up.
+let config = WKWebViewConfiguration()
+config.websiteDataStore = .nonPersistent()
+let webView = WKWebView(frame: NSRect(x: 0, y: 0, width: cssW * scale, height: cssH * scale), configuration: config)
 webView.pageZoom = scale
-webView.load(URLRequest(url: url))
+webView.load(URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData))
 
 var attempts = 0
 @MainActor func waitUntilReady() {
