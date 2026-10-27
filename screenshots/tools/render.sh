@@ -21,9 +21,9 @@ for i in 1 2 3 4; do
   swift screenshots/tools/snap.swift "http://localhost:$PORT/screenshots/tools/desktop.html?scene=$i" 1440 900 2 "$RAW" 2>/dev/null
   sips -z 800 1280 "$RAW" --out "screenshots/chrome-web-store/$N-1280x800.png" >/dev/null
   cp "screenshots/chrome-web-store/$N-1280x800.png" "screenshots/firefox-addons/$N-1280x800.png"
-  # iPhone 6.9" display: 1290x2796 (430x932 at 3x)
-  swift screenshots/tools/snap.swift "http://localhost:$PORT/screenshots/tools/mobile.html?device=phone&scene=$i" 430 932 3 \
-    "screenshots/iphone-app-store/$N-1290x2796.png" 2>/dev/null
+  # iPhone with Dynamic Island (medium), the required iPhone slot: 1206x2622 (402x874 at 3x)
+  swift screenshots/tools/snap.swift "http://localhost:$PORT/screenshots/tools/mobile.html?device=phone&scene=$i" 402 874 3 \
+    "screenshots/iphone-app-store/$N-1206x2622.png" 2>/dev/null
   # iPad 13" accepts 2064x2752 / 2048x2732 (rendered at 2x)
   for VIEW in 1032x1376 1024x1366; do
     W=${VIEW%x*}; H=${VIEW#*x}
