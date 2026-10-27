@@ -1,6 +1,6 @@
 # String to CSV Converter
 
-A modern and efficient Chrome extension to convert a string of IDs or values into a CSV (Comma-Separated Values) formatted string with advanced theming and customization options.
+A modern and efficient browser extension for Chrome, Edge, Firefox and Safari to convert a string of IDs or values into a CSV (Comma-Separated Values) formatted string with advanced theming and customization options.
 
 ## Features
 
@@ -104,15 +104,16 @@ Run `./build.sh` to assemble the shippable extension into `dist/`. Every browser
 
 ### Browser Compatibility
 
-- **Chrome**: Fully supported (Manifest V3)
-- **Edge**: Compatible with Chromium-based Edge
+- **Chrome / Edge**: Fully supported (Manifest V3)
+- **Firefox**: Supported from Firefox 140 (also LibreWolf, Zen, Waterfox, Floorp)
+- **Safari**: Supported on macOS and iOS via the Xcode project in `safari/`
 - **Performance**: Optimized for inputs up to 15 million characters
 
 ### Architecture
 
 - **Frontend**: Vanilla JavaScript with modern ES6+ features
 - **Styling**: CSS3 with CSS Custom Properties for theming
-- **Storage**: Chrome Extension Storage API for settings persistence
+- **Storage**: WebExtension `storage.sync` API for settings persistence
 - **Performance**: Debounced input processing and efficient DOM manipulation
 
 ### File Structure
@@ -121,13 +122,25 @@ Run `./build.sh` to assemble the shippable extension into `dist/`. Every browser
 ├── index.html          # Main popup interface
 ├── scripts.js          # Core functionality and event handling
 ├── styles.css          # Styling and theme definitions
-├── manifest.json       # Extension configuration
-└── README.md          # Documentation
+├── manifest.json       # Extension configuration (Chrome, Firefox, Safari)
+├── icons/              # Extension and app icons (icon.svg is the source)
+├── vendor/fontawesome/ # Bundled Font Awesome icon font
+├── build.sh            # Assembles dist/ for every browser target
+├── safari/             # Safari Web Extension Xcode project (macOS + iOS)
+├── docs/privacy.html   # Privacy policy (served via GitHub Pages)
+└── README.md           # Documentation
 ```
 
 ## Changelog
 
-### Latest Updates
+### v2.6
+
+- **Firefox and Safari support**: Firefox add-on settings, Safari Xcode project, shared `build.sh`
+- **Extension icons**: New toolbar and store icons
+- **Offline icons**: Font Awesome is bundled instead of loaded from a CDN
+- **Cleanup**: Removed debug logging (including logging of input text) and unused files
+
+### v2.5
 
 - **Enhanced UI/UX**: Added Material Design 3 theme with modern styling
 - **Improved Accessibility**: Better contrast ratios and keyboard navigation
@@ -150,7 +163,7 @@ Your privacy is important. This extension:
 
 - **Processes all data locally** on your machine
 - **Does not collect, store, or transmit** any of your data to external servers
-- **Only uses Chrome Storage API** to save your preferences locally
+- **Only uses the browser's extension storage API** to save your preferences locally
 - **Requires no special permissions** beyond basic extension functionality
 - **Open source** - all code is transparent and auditable
 

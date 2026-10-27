@@ -68,30 +68,16 @@ jobs:
           cat > release_notes.md << 'EOF'
           ## String to CSV Converter v${{ steps.manifest_version.outputs.version }}
 
-          ### 🎨 New Features
-          - **Enhanced UI/UX**: Added Material Design 3 theme with modern styling
-          - **Resizable Interface**: Drag-to-resize functionality with size persistence
-          - **Visual Feedback**: Dynamic icons and real-time input counters
-          - **Collapsible Settings**: Organized settings panel with expandable sections
-
-          ### 🚀 Improvements
-          - **Performance Optimization**: Improved handling of large inputs (up to 15M characters)
-          - **Better Accessibility**: Enhanced contrast ratios and keyboard navigation
-          - **Theme System**: Comprehensive theming with light/dark mode support
-          - **Settings Organization**: Better space management and user experience
-
-          ### 🔧 Technical Updates
-          - Modern ES6+ JavaScript implementation
-          - CSS3 with CSS Custom Properties for theming
-          - Debounced input processing for smooth performance
-          - Enhanced error handling and user feedback
+          ### What's new
+          - Firefox and Safari support (Firefox add-on zip attached below)
+          - New extension icons
+          - Font Awesome bundled locally, so icons work offline
+          - Removed debug logging and unused files
 
           ### 📦 Installation
-          1. Download the `string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip` file
-          2. Extract the contents
-          3. Open Chrome and go to `chrome://extensions/`
-          4. Enable "Developer mode"
-          5. Click "Load unpacked" and select the extracted folder
+          - **Chrome / Edge**: download `string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip`, extract it, open `chrome://extensions/`, enable Developer mode and click "Load unpacked"
+          - **Firefox**: install from addons.mozilla.org (the attached Firefox zip is the unsigned store upload)
+          - **Safari**: install from the Mac App Store / App Store
 
           ### 🔗 Links
           - [Chrome Web Store](https://chrome.google.com/webstore) (if published)

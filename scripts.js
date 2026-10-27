@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const themeSelect = document.getElementById("themeSelect");
   const resizeHandle = document.getElementById("resize-handle");
 
-  let conversionWorker;
   const MAX_INPUT_LENGTH = 15_000_000; // 15 million characters
   let isInitialized = false; // Flag to prevent conversion on startup
 
@@ -71,13 +70,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   /**
-   * Handles the conversion logic directly (simplified without worker for debugging).
+   * Converts the input string to CSV using the current settings.
    */
   function handleConvert() {
-    console.log("handleConvert (debounced) triggered.");
     // Guard against running conversion during initialization
     if (!isInitialized) {
-      console.log("Conversion skipped - not initialized yet");
       return;
     }
 
@@ -103,10 +100,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const quoteChar = selectedQuoteType === "double" ? '"' : "'";
 
-    console.log("Converting with separator:", separator, "quote:", quoteChar);
 
     try {
-      // Direct conversion without worker for debugging
       const result = inputString
         .split(separator)
         .map((item) => (shouldTrim ? item.trim() : item))
@@ -115,7 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
         .join(",\n");
 
       outputElement.value = result;
-      console.log("Conversion successful, output length:", result.length);
     } catch (error) {
       showError(`Conversion failed: ${error.message}`);
       console.error("Conversion error:", error);
@@ -134,13 +128,11 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function showLoader() {
-    console.log("showLoader() called.");
     container.classList.add("blurred");
     loaderElement.classList.remove("hidden");
   }
 
   function hideLoader() {
-    console.log("hideLoader() called.");
     container.classList.remove("blurred");
     loaderElement.classList.add("hidden");
   }
@@ -182,7 +174,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function restoreOptions() {
-    console.log("restoreOptions() called.");
     const defaults = {
       inputText: "",
       separator: "newline",
@@ -194,7 +185,6 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     const applySettings = (settings) => {
-      console.log("applySettings() called with:", settings);
       inputElement.value = settings.inputText;
       separatorElement.value = settings.separator;
       quoteTypeElement.value = settings.quoteType;
@@ -217,10 +207,8 @@ document.addEventListener("DOMContentLoaded", function () {
       // ensuring any stray startup events (like autofill) are ignored.
       setTimeout(() => {
         isInitialized = true;
-        console.log("isInitialized set to true. Ready for conversions.");
         // Test conversion immediately if there's input
         if (inputElement.value) {
-          console.log("Found existing input, triggering conversion");
           handleConvert();
         }
       }, 50);
@@ -231,7 +219,6 @@ document.addEventListener("DOMContentLoaded", function () {
       // Get settings from storage, using defaults if none are found
       chrome.storage.sync.get({ settings: defaults }, (data) => {
         applySettings(data.settings);
-        console.log("Settings retrieved from storage.");
       });
     } else {
       // Running outside the extension (e.g., as file://), apply default settings
@@ -348,7 +335,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Live conversion: Update output when input text or settings change.
   inputElement.addEventListener("input", () => {
-    console.log("Input event detected, value:", inputElement.value);
     updateInputCounter();
     debouncedHandleConvert();
     saveOptions(); // Save input text as well
@@ -359,35 +345,29 @@ document.addEventListener("DOMContentLoaded", function () {
     if (separatorElement.value === "custom") {
       customSeparatorInput.focus(); // Focus on the input for user convenience
     }
-    console.log("Separator change detected.");
     updateSeparatorDisplayIcon(); // Update icon on change
     handleSettingChangeAndSave();
   });
 
   quoteTypeElement.addEventListener("change", () => {
-    console.log("Quote type change detected.");
     updateQuoteTypeDisplayIcon();
     handleSettingChangeAndSave();
   });
   customSeparatorInput.addEventListener("input", () => {
-    console.log("Custom separator input detected.");
     handleSettingChangeAndSave();
   });
   trimLinesCheckbox.addEventListener("change", () => {
-    console.log("Trim lines checkbox change detected.");
     handleSettingChangeAndSave();
   });
 
   // Add event listener for dark mode toggle
   darkModeToggle.addEventListener("change", () => {
-    console.log("Dark mode toggle change detected.");
     applyTheme(themeSelect.value, darkModeToggle.checked);
     saveOptions();
   });
 
   // Add event listener for theme selection
   themeSelect.addEventListener("change", () => {
-    console.log("Theme change detected:", themeSelect.value);
     applyTheme(themeSelect.value, darkModeToggle.checked);
     saveOptions();
   });

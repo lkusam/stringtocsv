@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "String to CSV converter",
-  "version": "2.5",
+  "version": "2.6",
   "description": "Converts String into CSV",
   "icons": {
     "16": "icons/icon-16.png",
