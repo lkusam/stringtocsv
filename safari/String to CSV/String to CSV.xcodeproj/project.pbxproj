@@ -103,12 +103,12 @@
 		B74FB24330901E3E008FFB67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B74FB24830901E3E008FFB67 /* String to CSV Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "String to CSV Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B74FB24D30901E3E008FFB67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B74FB26D30901E3E008FFB67 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = index.html; path = ../../../dist/index.html; sourceTree = "<group>"; };
-		B74FB26E30901E3E008FFB67 /* styles.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = styles.css; path = ../../../dist/styles.css; sourceTree = "<group>"; };
-		B74FB26F30901E3E008FFB67 /* scripts.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = scripts.js; path = ../../../dist/scripts.js; sourceTree = "<group>"; };
-		B74FB27030901E3E008FFB67 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = ../../../dist/icons; sourceTree = "<group>"; };
-		B74FB27130901E3E008FFB67 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../../dist/manifest.json; sourceTree = "<group>"; };
-		B74FB27230901E3E008FFB67 /* vendor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = vendor; path = ../../../dist/vendor; sourceTree = "<group>"; };
+		B74FB26D30901E3E008FFB67 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = index.html; path = ../../../dist/safari/index.html; sourceTree = "<group>"; };
+		B74FB26E30901E3E008FFB67 /* styles.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = styles.css; path = ../../../dist/safari/styles.css; sourceTree = "<group>"; };
+		B74FB26F30901E3E008FFB67 /* scripts.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = scripts.js; path = ../../../dist/safari/scripts.js; sourceTree = "<group>"; };
+		B74FB27030901E3E008FFB67 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = ../../../dist/safari/icons; sourceTree = "<group>"; };
+		B74FB27130901E3E008FFB67 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../../dist/safari/manifest.json; sourceTree = "<group>"; };
+		B74FB27230901E3E008FFB67 /* vendor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = vendor; path = ../../../dist/safari/vendor; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */

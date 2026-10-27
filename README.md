@@ -94,35 +94,40 @@ To install this extension locally for development:
 
 ### Building for Chrome, Firefox and Safari
 
-Run `./build.sh` to assemble the shippable extension into `dist/`. Every browser target packages from that folder.
+Run `./build.sh`. It creates one folder per browser under `dist/` and zips the Chrome and Firefox builds:
 
-- **Chrome / Edge**: load `dist/` unpacked, or zip it for the Chrome Web Store.
-- **Firefox** (and LibreWolf, Zen, Waterfox, Floorp): `npx web-ext lint --source-dir dist`, then `npx web-ext run --source-dir dist` to try it, or `npx web-ext build --source-dir dist` to produce the upload zip for addons.mozilla.org.
-- **Safari** (macOS and iOS): run `./build.sh`, then open `safari/String to CSV/String to CSV.xcodeproj` in Xcode. The project references the files in `dist/`, so rebuild `dist/` before archiving.
+```
+dist/
+├── chrome/                                   # load unpacked in Chrome / Edge
+├── firefox/                                  # includes the Firefox-only manifest settings
+├── safari/                                   # packaged by the Safari Xcode project
+├── string-to-csv-converter-chrome-v<version>.zip
+└── string-to-csv-converter-firefox-v<version>.zip
+```
+
+- **Chrome / Edge**: load `dist/chrome` unpacked from `chrome://extensions` (Developer mode).
+- **Firefox** (and LibreWolf, Zen, Waterfox, Floorp): open `about:debugging#/runtime/this-firefox` → **Load Temporary Add-on…** and pick `dist/firefox/manifest.json`.
+- **Safari** (macOS and iOS): open `safari/String to CSV/String to CSV.xcodeproj` in Xcode. It packages the files in `dist/safari`, so run `./build.sh` before building or archiving.
 
 ## Releasing
 
-### Chrome and Firefox (automatic)
+Store uploads are manual. GitHub Actions only builds the zips.
 
 1. Bump `version` in `manifest.json` and merge to `main`.
-2. The **Publish Extension** workflow builds `dist/`, creates a GitHub release `v<version>` with the Chrome and Firefox zips, uploads to the Chrome Web Store, and submits to addons.mozilla.org.
-3. If a store upload fails, fix the cause, then run the workflow manually (Actions → Publish Extension → Run workflow) with **republish** ticked. That re-sends the current version to the stores without recreating the release.
+2. The **Build Release Zips** workflow runs `./build.sh` and creates a GitHub release `v<version>` with the Chrome and Firefox zips attached. If that version's release already exists, it builds but doesn't publish anything.
+3. Download the zips from the release and upload them:
 
-Required repository secrets:
+### Chrome
 
-| Secret | Where to get it |
-| --- | --- |
-| `CHROME_EXTENSION_ID` | Chrome Web Store Developer Dashboard → the item's ID |
-| `CHROME_PUBLISHER_ID` | Developer Dashboard → Publisher → Settings |
-| `CHROME_CLIENT_ID`, `CHROME_CLIENT_SECRET` | Google Cloud Console → APIs & Services → Credentials → OAuth client |
-| `CHROME_REFRESH_TOKEN` | OAuth consent for scope `https://www.googleapis.com/auth/chromewebstore` with the client above. Keep the OAuth app's publishing status **In production**; tokens from apps in **Testing** expire after 7 days. |
-| `AMO_JWT_ISSUER`, `AMO_JWT_SECRET` | addons.mozilla.org → Developer Hub → Manage API Keys. Without them the Firefox upload is skipped. |
+Chrome Web Store Developer Dashboard → select the item → **Package** → **Upload new package** → choose `string-to-csv-converter-chrome-v<version>.zip` → **Submit for review**.
 
-Every pull request also runs **Check Extension Builds**, which lints the Firefox build.
+### Firefox
 
-### Safari (manual)
+addons.mozilla.org → Developer Hub → **My Add-ons** → String to CSV converter → **Upload New Version** → choose `string-to-csv-converter-firefox-v<version>.zip` → answer **No** to the source code question → add release notes → **Submit Version**.
 
-Safari isn't built in CI. Each release is archived and uploaded from Xcode on a Mac.
+### Safari
+
+Each release is archived and uploaded from Xcode on a Mac.
 
 One-time setup:
 
@@ -163,7 +168,7 @@ For each release:
 ├── manifest.json       # Extension configuration (Chrome, Firefox, Safari)
 ├── icons/              # Extension and app icons (icon.svg is the source)
 ├── vendor/fontawesome/ # Bundled Font Awesome icon font
-├── build.sh            # Assembles dist/ for every browser target
+├── build.sh            # Builds dist/<browser> folders and store zips
 ├── safari/             # Safari Web Extension Xcode project (macOS + iOS)
 ├── docs/privacy.html   # Privacy policy (served via GitHub Pages)
 └── README.md           # Documentation

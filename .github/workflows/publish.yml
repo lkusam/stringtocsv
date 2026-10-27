@@ -1,12 +1,7 @@
-name: Publish Extension (Chrome, Firefox)
+name: Build Release Zips
 
 on:
   workflow_dispatch:
-    inputs:
-      republish:
-        description: "Re-send the current version to the stores even if its GitHub release already exists"
-        type: boolean
-        default: false
   push:
     branches:
       - main
@@ -17,15 +12,14 @@ on:
       - "styles.css"
       - "icons/**"
       - "vendor/**"
+      - "build.sh"
 
 permissions:
   contents: write
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
-    env:
-      AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
 
     steps:
       - name: Checkout code
@@ -45,51 +39,28 @@ jobs:
         run: |
           if git rev-parse "v${{ steps.manifest_version.outputs.version }}" >/dev/null 2>&1; then
             echo "tag_exists=true" >> $GITHUB_OUTPUT
-            echo "Tag v${{ steps.manifest_version.outputs.version }} already exists"
+            echo "Tag v${{ steps.manifest_version.outputs.version }} already exists; bump the version in manifest.json to make a new release"
           else
             echo "tag_exists=false" >> $GITHUB_OUTPUT
-            echo "Tag v${{ steps.manifest_version.outputs.version }} does not exist"
           fi
 
-      - name: Package Extension
-        run: |
-          ./build.sh
-
-          # Create the zip file
-          cd dist
-          zip -r ../string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip .
-          cd ..
-
-          # Also create a generic name for latest release
-          cp string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip string-to-csv-converter-latest.zip
-
-      - name: Lint and build Firefox add-on
-        run: |
-          npx --yes web-ext@8 lint --source-dir dist --self-hosted=false
-          npx --yes web-ext@8 build --source-dir dist --artifacts-dir web-ext-artifacts \
-            --filename string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip
+      - name: Build Chrome and Firefox zips
+        run: ./build.sh
 
       - name: Generate Release Notes
-        id: release_notes
         run: |
           cat > release_notes.md << 'EOF'
           ## String to CSV Converter v${{ steps.manifest_version.outputs.version }}
 
-          ### What's new
-          - Firefox and Safari support (Firefox add-on zip attached below)
-          - New extension icons
-          - Font Awesome bundled locally, so icons work offline
-          - Removed debug logging and unused files
+          | Store | File | Upload at |
+          | --- | --- | --- |
+          | Chrome Web Store (also Edge Add-ons) | `string-to-csv-converter-chrome-v${{ steps.manifest_version.outputs.version }}.zip` | Chrome Web Store Developer Dashboard → Package → Upload new package |
+          | Firefox Add-ons | `string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip` | addons.mozilla.org Developer Hub → Manage → Upload New Version |
+          | Safari | Archive from Xcode | See "Safari" under "Releasing" in the README |
 
-          ### 📦 Installation
-          - **Chrome / Edge**: download `string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip`, extract it, open `chrome://extensions/`, enable Developer mode and click "Load unpacked"
-          - **Firefox**: install from addons.mozilla.org (the attached Firefox zip is the unsigned store upload)
-          - **Safari**: released separately through the App Store
-
-          ### 🔗 Links
-          - [Chrome Web Store](https://chrome.google.com/webstore) (if published)
-          - [GitHub Repository](https://github.com/${{ github.repository }})
-          - [Documentation](https://github.com/${{ github.repository }}#readme)
+          ### Load unpacked for testing
+          - **Chrome / Edge**: extract the Chrome zip, open `chrome://extensions/`, enable Developer mode and click "Load unpacked"
+          - **Firefox**: open `about:debugging#/runtime/this-firefox` → "Load Temporary Add-on…" and pick the Firefox zip
           EOF
 
       - name: Create GitHub Release
@@ -99,56 +70,6 @@ jobs:
           tag_name: v${{ steps.manifest_version.outputs.version }}
           name: String to CSV Converter v${{ steps.manifest_version.outputs.version }}
           body_path: release_notes.md
-          draft: false
-          prerelease: false
           files: |
-            string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip
-            string-to-csv-converter-latest.zip
-            web-ext-artifacts/string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip
-
-      - name: Upload to Chrome Web Store (Optional)
-        id: chrome_upload
-        if: steps.check_tag.outputs.tag_exists == 'false' || inputs.republish
-        continue-on-error: true # still try Firefox if Chrome fails; the job is failed at the end
-        uses: mnao305/chrome-extension-upload@v7.0.0
-        with:
-          file-path: string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip
-          extension-id: ${{ secrets.CHROME_EXTENSION_ID }}
-          publisher-id: ${{ secrets.CHROME_PUBLISHER_ID }}
-          client-id: ${{ secrets.CHROME_CLIENT_ID }}
-          client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
-          refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          publish: true
-        env:
-          CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
-
-      - name: Submit to Firefox Add-ons (Optional)
-        if: (steps.check_tag.outputs.tag_exists == 'false' || inputs.republish) && env.AMO_JWT_ISSUER != ''
-        run: |
-          set +e
-          npx --yes web-ext@8 sign --source-dir dist --channel listed \
-            --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET" 2>&1 | tee amo.log
-          STATUS=${PIPESTATUS[0]}
-          if [ "$STATUS" -ne 0 ] && grep -qi "already exists" amo.log; then
-            echo "::notice::Firefox v${{ steps.manifest_version.outputs.version }} is already on AMO; nothing to submit."
-            exit 0
-          fi
-          exit $STATUS
-        env:
-          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
-
-      - name: Fail if Chrome upload failed
-        if: steps.chrome_upload.outcome == 'failure'
-        run: |
-          echo "::error::Chrome Web Store upload failed. Fix it, then re-run this workflow with 'republish' ticked."
-          exit 1
-
-      - name: Output Results
-        run: |
-          echo "✅ Build completed for version ${{ steps.manifest_version.outputs.version }}"
-          echo "📦 Package: string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip"
-          if [ "${{ steps.check_tag.outputs.tag_exists }}" = "true" ]; then
-            echo "ℹ️  Release already exists for this version"
-          else
-            echo "🎉 New release created: v${{ steps.manifest_version.outputs.version }}"
-          fi
+            dist/string-to-csv-converter-chrome-v${{ steps.manifest_version.outputs.version }}.zip
+            dist/string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip
