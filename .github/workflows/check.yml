@@ -1,0 +1,40 @@
+name: Check Extension Builds
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  firefox:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build extension files
+        run: ./build.sh
+
+      - name: Lint Firefox add-on
+        run: npx --yes web-ext@8 lint --source-dir dist --self-hosted=false
+
+  safari:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Select latest Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Build extension files
+        run: ./build.sh
+
+      - name: Build Safari app (unsigned)
+        run: |
+          for PLATFORM in macOS iOS; do
+            xcodebuild build -project "safari/String to CSV/String to CSV.xcodeproj" \
+              -scheme "String to CSV ($PLATFORM)" -destination "generic/platform=$PLATFORM" \
+              CODE_SIGNING_ALLOWED=NO
+          done
