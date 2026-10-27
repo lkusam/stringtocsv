@@ -1,0 +1,949 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B74FB22430901E3E008FFB67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB22330901E3E008FFB67 /* AppDelegate.swift */; };
+		B74FB22630901E3E008FFB67 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB22530901E3E008FFB67 /* SceneDelegate.swift */; };
+		B74FB22930901E3E008FFB67 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B74FB22730901E3E008FFB67 /* LaunchScreen.storyboard */; };
+		B74FB22C30901E3E008FFB67 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B74FB22A30901E3E008FFB67 /* Main.storyboard */; };
+		B74FB23530901E3E008FFB67 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB23430901E3E008FFB67 /* AppDelegate.swift */; };
+		B74FB23830901E3E008FFB67 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B74FB23630901E3E008FFB67 /* Main.storyboard */; };
+		B74FB23F30901E3E008FFB67 /* String to CSV Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B74FB23E30901E3E008FFB67 /* String to CSV Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B74FB24930901E3E008FFB67 /* String to CSV Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = B74FB24830901E3E008FFB67 /* String to CSV Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B74FB24E30901E3E008FFB67 /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = B74FB21330901E3D008FFB67 /* Main.html */; };
+		B74FB24F30901E3E008FFB67 /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = B74FB21330901E3D008FFB67 /* Main.html */; };
+		B74FB25030901E3E008FFB67 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B74FB21530901E3D008FFB67 /* Icon.png */; };
+		B74FB25130901E3E008FFB67 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B74FB21530901E3D008FFB67 /* Icon.png */; };
+		B74FB25230901E3E008FFB67 /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = B74FB21630901E3D008FFB67 /* Style.css */; };
+		B74FB25330901E3E008FFB67 /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = B74FB21630901E3D008FFB67 /* Style.css */; };
+		B74FB25430901E3E008FFB67 /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = B74FB21730901E3D008FFB67 /* Script.js */; };
+		B74FB25530901E3E008FFB67 /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = B74FB21730901E3D008FFB67 /* Script.js */; };
+		B74FB25630901E3E008FFB67 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB21830901E3D008FFB67 /* ViewController.swift */; };
+		B74FB25730901E3E008FFB67 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB21830901E3D008FFB67 /* ViewController.swift */; };
+		B74FB25830901E3E008FFB67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B74FB21930901E3E008FFB67 /* Assets.xcassets */; };
+		B74FB25930901E3E008FFB67 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B74FB21930901E3E008FFB67 /* Assets.xcassets */; };
+		B74FB25A30901E3E008FFB67 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB21B30901E3E008FFB67 /* SafariWebExtensionHandler.swift */; };
+		B74FB25B30901E3E008FFB67 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74FB21B30901E3E008FFB67 /* SafariWebExtensionHandler.swift */; };
+		B74FB27330901E3E008FFB67 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = B74FB26D30901E3E008FFB67 /* index.html */; };
+		B74FB27430901E3E008FFB67 /* styles.css in Resources */ = {isa = PBXBuildFile; fileRef = B74FB26E30901E3E008FFB67 /* styles.css */; };
+		B74FB27530901E3E008FFB67 /* scripts.js in Resources */ = {isa = PBXBuildFile; fileRef = B74FB26F30901E3E008FFB67 /* scripts.js */; };
+		B74FB27630901E3E008FFB67 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = B74FB27030901E3E008FFB67 /* icons */; };
+		B74FB27730901E3E008FFB67 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = B74FB27130901E3E008FFB67 /* manifest.json */; };
+		B74FB27830901E3E008FFB67 /* vendor in Resources */ = {isa = PBXBuildFile; fileRef = B74FB27230901E3E008FFB67 /* vendor */; };
+		B74FB27930901E3E008FFB67 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = B74FB26D30901E3E008FFB67 /* index.html */; };
+		B74FB27A30901E3E008FFB67 /* styles.css in Resources */ = {isa = PBXBuildFile; fileRef = B74FB26E30901E3E008FFB67 /* styles.css */; };
+		B74FB27B30901E3E008FFB67 /* scripts.js in Resources */ = {isa = PBXBuildFile; fileRef = B74FB26F30901E3E008FFB67 /* scripts.js */; };
+		B74FB27C30901E3E008FFB67 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = B74FB27030901E3E008FFB67 /* icons */; };
+		B74FB27D30901E3E008FFB67 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = B74FB27130901E3E008FFB67 /* manifest.json */; };
+		B74FB27E30901E3E008FFB67 /* vendor in Resources */ = {isa = PBXBuildFile; fileRef = B74FB27230901E3E008FFB67 /* vendor */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B74FB24030901E3E008FFB67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B74FB20D30901E3D008FFB67 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B74FB23D30901E3E008FFB67;
+			remoteInfo = "String to CSV Extension (iOS)";
+		};
+		B74FB24A30901E3E008FFB67 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B74FB20D30901E3D008FFB67 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = B74FB24730901E3E008FFB67;
+			remoteInfo = "String to CSV Extension (macOS)";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		B74FB26130901E3E008FFB67 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				B74FB23F30901E3E008FFB67 /* String to CSV Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+		B74FB26830901E3E008FFB67 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				B74FB24930901E3E008FFB67 /* String to CSV Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		B74FB21430901E3D008FFB67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		B74FB21530901E3D008FFB67 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		B74FB21630901E3D008FFB67 /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		B74FB21730901E3D008FFB67 /* Script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Script.js; sourceTree = "<group>"; };
+		B74FB21830901E3D008FFB67 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		B74FB21930901E3E008FFB67 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B74FB21B30901E3E008FFB67 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		B74FB22030901E3E008FFB67 /* String to CSV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "String to CSV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B74FB22330901E3E008FFB67 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B74FB22530901E3E008FFB67 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		B74FB22830901E3E008FFB67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		B74FB22B30901E3E008FFB67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B74FB22D30901E3E008FFB67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B74FB23230901E3E008FFB67 /* String to CSV.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "String to CSV.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B74FB23430901E3E008FFB67 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		B74FB23730901E3E008FFB67 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		B74FB23930901E3E008FFB67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B74FB23E30901E3E008FFB67 /* String to CSV Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "String to CSV Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B74FB24330901E3E008FFB67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B74FB24830901E3E008FFB67 /* String to CSV Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "String to CSV Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B74FB24D30901E3E008FFB67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B74FB26D30901E3E008FFB67 /* index.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = index.html; path = ../../../dist/index.html; sourceTree = "<group>"; };
+		B74FB26E30901E3E008FFB67 /* styles.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = styles.css; path = ../../../dist/styles.css; sourceTree = "<group>"; };
+		B74FB26F30901E3E008FFB67 /* scripts.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = scripts.js; path = ../../../dist/scripts.js; sourceTree = "<group>"; };
+		B74FB27030901E3E008FFB67 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = ../../../dist/icons; sourceTree = "<group>"; };
+		B74FB27130901E3E008FFB67 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../../dist/manifest.json; sourceTree = "<group>"; };
+		B74FB27230901E3E008FFB67 /* vendor */ = {isa = PBXFileReference; lastKnownFileType = folder; name = vendor; path = ../../../dist/vendor; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B74FB21D30901E3E008FFB67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		B74FB22F30901E3E008FFB67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		B74FB23B30901E3E008FFB67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		B74FB24530901E3E008FFB67 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		B74FB20C30901E3D008FFB67 = {
+			isa = PBXGroup;
+			children = (
+				B74FB21130901E3D008FFB67 /* Shared (App) */,
+				B74FB21A30901E3E008FFB67 /* Shared (Extension) */,
+				B74FB22230901E3E008FFB67 /* iOS (App) */,
+				B74FB23330901E3E008FFB67 /* macOS (App) */,
+				B74FB24230901E3E008FFB67 /* iOS (Extension) */,
+				B74FB24C30901E3E008FFB67 /* macOS (Extension) */,
+				B74FB22130901E3E008FFB67 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B74FB21130901E3D008FFB67 /* Shared (App) */ = {
+			isa = PBXGroup;
+			children = (
+				B74FB21830901E3D008FFB67 /* ViewController.swift */,
+				B74FB21930901E3E008FFB67 /* Assets.xcassets */,
+				B74FB21230901E3D008FFB67 /* Resources */,
+			);
+			path = "Shared (App)";
+			sourceTree = "<group>";
+		};
+		B74FB21230901E3D008FFB67 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B74FB21330901E3D008FFB67 /* Main.html */,
+				B74FB21530901E3D008FFB67 /* Icon.png */,
+				B74FB21630901E3D008FFB67 /* Style.css */,
+				B74FB21730901E3D008FFB67 /* Script.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B74FB21A30901E3E008FFB67 /* Shared (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				B74FB26C30901E3E008FFB67 /* Resources */,
+				B74FB21B30901E3E008FFB67 /* SafariWebExtensionHandler.swift */,
+			);
+			path = "Shared (Extension)";
+			sourceTree = "<group>";
+		};
+		B74FB22130901E3E008FFB67 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B74FB22030901E3E008FFB67 /* String to CSV.app */,
+				B74FB23230901E3E008FFB67 /* String to CSV.app */,
+				B74FB23E30901E3E008FFB67 /* String to CSV Extension.appex */,
+				B74FB24830901E3E008FFB67 /* String to CSV Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B74FB22230901E3E008FFB67 /* iOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				B74FB22330901E3E008FFB67 /* AppDelegate.swift */,
+				B74FB22530901E3E008FFB67 /* SceneDelegate.swift */,
+				B74FB22730901E3E008FFB67 /* LaunchScreen.storyboard */,
+				B74FB22A30901E3E008FFB67 /* Main.storyboard */,
+				B74FB22D30901E3E008FFB67 /* Info.plist */,
+			);
+			path = "iOS (App)";
+			sourceTree = "<group>";
+		};
+		B74FB23330901E3E008FFB67 /* macOS (App) */ = {
+			isa = PBXGroup;
+			children = (
+				B74FB23430901E3E008FFB67 /* AppDelegate.swift */,
+				B74FB23630901E3E008FFB67 /* Main.storyboard */,
+				B74FB23930901E3E008FFB67 /* Info.plist */,
+			);
+			path = "macOS (App)";
+			sourceTree = "<group>";
+		};
+		B74FB24230901E3E008FFB67 /* iOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				B74FB24330901E3E008FFB67 /* Info.plist */,
+			);
+			path = "iOS (Extension)";
+			sourceTree = "<group>";
+		};
+		B74FB24C30901E3E008FFB67 /* macOS (Extension) */ = {
+			isa = PBXGroup;
+			children = (
+				B74FB24D30901E3E008FFB67 /* Info.plist */,
+			);
+			path = "macOS (Extension)";
+			sourceTree = "<group>";
+		};
+		B74FB26C30901E3E008FFB67 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B74FB26D30901E3E008FFB67 /* index.html */,
+				B74FB26E30901E3E008FFB67 /* styles.css */,
+				B74FB26F30901E3E008FFB67 /* scripts.js */,
+				B74FB27030901E3E008FFB67 /* icons */,
+				B74FB27130901E3E008FFB67 /* manifest.json */,
+				B74FB27230901E3E008FFB67 /* vendor */,
+			);
+			name = Resources;
+			path = "Shared (Extension)";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B74FB21F30901E3E008FFB67 /* String to CSV (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B74FB26230901E3E008FFB67 /* Build configuration list for PBXNativeTarget "String to CSV (iOS)" */;
+			buildPhases = (
+				B74FB21C30901E3E008FFB67 /* Sources */,
+				B74FB21D30901E3E008FFB67 /* Frameworks */,
+				B74FB21E30901E3E008FFB67 /* Resources */,
+				B74FB26130901E3E008FFB67 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B74FB24130901E3E008FFB67 /* PBXTargetDependency */,
+			);
+			name = "String to CSV (iOS)";
+			productName = "String to CSV (iOS)";
+			productReference = B74FB22030901E3E008FFB67 /* String to CSV.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B74FB23130901E3E008FFB67 /* String to CSV (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B74FB26930901E3E008FFB67 /* Build configuration list for PBXNativeTarget "String to CSV (macOS)" */;
+			buildPhases = (
+				B74FB22E30901E3E008FFB67 /* Sources */,
+				B74FB22F30901E3E008FFB67 /* Frameworks */,
+				B74FB23030901E3E008FFB67 /* Resources */,
+				B74FB26830901E3E008FFB67 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B74FB24B30901E3E008FFB67 /* PBXTargetDependency */,
+			);
+			name = "String to CSV (macOS)";
+			productName = "String to CSV (macOS)";
+			productReference = B74FB23230901E3E008FFB67 /* String to CSV.app */;
+			productType = "com.apple.product-type.application";
+		};
+		B74FB23D30901E3E008FFB67 /* String to CSV Extension (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B74FB25E30901E3E008FFB67 /* Build configuration list for PBXNativeTarget "String to CSV Extension (iOS)" */;
+			buildPhases = (
+				B74FB23A30901E3E008FFB67 /* Sources */,
+				B74FB23B30901E3E008FFB67 /* Frameworks */,
+				B74FB23C30901E3E008FFB67 /* Resources */,
+			);
+			buildRules = (
+			);
+			name = "String to CSV Extension (iOS)";
+			productName = "String to CSV Extension (iOS)";
+			productReference = B74FB23E30901E3E008FFB67 /* String to CSV Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		B74FB24730901E3E008FFB67 /* String to CSV Extension (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B74FB26530901E3E008FFB67 /* Build configuration list for PBXNativeTarget "String to CSV Extension (macOS)" */;
+			buildPhases = (
+				B74FB24430901E3E008FFB67 /* Sources */,
+				B74FB24530901E3E008FFB67 /* Frameworks */,
+				B74FB24630901E3E008FFB67 /* Resources */,
+			);
+			buildRules = (
+			);
+			name = "String to CSV Extension (macOS)";
+			productName = "String to CSV Extension (macOS)";
+			productReference = B74FB24830901E3E008FFB67 /* String to CSV Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B74FB20D30901E3D008FFB67 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2710;
+				LastUpgradeCheck = 2710;
+				TargetAttributes = {
+					B74FB21F30901E3E008FFB67 = {
+						CreatedOnToolsVersion = 27.1;
+					};
+					B74FB23130901E3E008FFB67 = {
+						CreatedOnToolsVersion = 27.1;
+					};
+					B74FB23D30901E3E008FFB67 = {
+						CreatedOnToolsVersion = 27.1;
+					};
+					B74FB24730901E3E008FFB67 = {
+						CreatedOnToolsVersion = 27.1;
+					};
+				};
+			};
+			buildConfigurationList = B74FB21030901E3D008FFB67 /* Build configuration list for PBXProject "String to CSV" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B74FB20C30901E3D008FFB67;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = B74FB22130901E3E008FFB67 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B74FB21F30901E3E008FFB67 /* String to CSV (iOS) */,
+				B74FB23130901E3E008FFB67 /* String to CSV (macOS) */,
+				B74FB23D30901E3E008FFB67 /* String to CSV Extension (iOS) */,
+				B74FB24730901E3E008FFB67 /* String to CSV Extension (macOS) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B74FB21E30901E3E008FFB67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				B74FB25030901E3E008FFB67 /* Icon.png in Resources */,
+				B74FB22930901E3E008FFB67 /* LaunchScreen.storyboard in Resources */,
+				B74FB24E30901E3E008FFB67 /* Main.html in Resources */,
+				B74FB25430901E3E008FFB67 /* Script.js in Resources */,
+				B74FB25830901E3E008FFB67 /* Assets.xcassets in Resources */,
+				B74FB22C30901E3E008FFB67 /* Main.storyboard in Resources */,
+				B74FB25230901E3E008FFB67 /* Style.css in Resources */,
+			);
+		};
+		B74FB23030901E3E008FFB67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				B74FB25130901E3E008FFB67 /* Icon.png in Resources */,
+				B74FB25330901E3E008FFB67 /* Style.css in Resources */,
+				B74FB23830901E3E008FFB67 /* Main.storyboard in Resources */,
+				B74FB25530901E3E008FFB67 /* Script.js in Resources */,
+				B74FB25930901E3E008FFB67 /* Assets.xcassets in Resources */,
+				B74FB24F30901E3E008FFB67 /* Main.html in Resources */,
+			);
+		};
+		B74FB23C30901E3E008FFB67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				B74FB27E30901E3E008FFB67 /* vendor in Resources */,
+				B74FB27930901E3E008FFB67 /* index.html in Resources */,
+				B74FB27C30901E3E008FFB67 /* icons in Resources */,
+				B74FB27D30901E3E008FFB67 /* manifest.json in Resources */,
+				B74FB27A30901E3E008FFB67 /* styles.css in Resources */,
+				B74FB27B30901E3E008FFB67 /* scripts.js in Resources */,
+			);
+		};
+		B74FB24630901E3E008FFB67 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				B74FB27830901E3E008FFB67 /* vendor in Resources */,
+				B74FB27330901E3E008FFB67 /* index.html in Resources */,
+				B74FB27630901E3E008FFB67 /* icons in Resources */,
+				B74FB27730901E3E008FFB67 /* manifest.json in Resources */,
+				B74FB27430901E3E008FFB67 /* styles.css in Resources */,
+				B74FB27530901E3E008FFB67 /* scripts.js in Resources */,
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B74FB21C30901E3E008FFB67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				B74FB25630901E3E008FFB67 /* ViewController.swift in Sources */,
+				B74FB22430901E3E008FFB67 /* AppDelegate.swift in Sources */,
+				B74FB22630901E3E008FFB67 /* SceneDelegate.swift in Sources */,
+			);
+		};
+		B74FB22E30901E3E008FFB67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				B74FB25730901E3E008FFB67 /* ViewController.swift in Sources */,
+				B74FB23530901E3E008FFB67 /* AppDelegate.swift in Sources */,
+			);
+		};
+		B74FB23A30901E3E008FFB67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				B74FB25A30901E3E008FFB67 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+		};
+		B74FB24430901E3E008FFB67 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				B74FB25B30901E3E008FFB67 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B74FB24130901E3E008FFB67 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B74FB23D30901E3E008FFB67 /* String to CSV Extension (iOS) */;
+			targetProxy = B74FB24030901E3E008FFB67 /* PBXContainerItemProxy */;
+		};
+		B74FB24B30901E3E008FFB67 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = B74FB24730901E3E008FFB67 /* String to CSV Extension (macOS) */;
+			targetProxy = B74FB24A30901E3E008FFB67 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		B74FB21330901E3D008FFB67 /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B74FB21430901E3D008FFB67 /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		B74FB22730901E3E008FFB67 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B74FB22830901E3E008FFB67 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		B74FB22A30901E3E008FFB67 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B74FB22B30901E3E008FFB67 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		B74FB23630901E3E008FFB67 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				B74FB23730901E3E008FFB67 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		B74FB25C30901E3E008FFB67 /* Debug configuration for PBXProject "String to CSV" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		B74FB25D30901E3E008FFB67 /* Release configuration for PBXProject "String to CSV" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		B74FB25F30901E3E008FFB67 /* Debug configuration for PBXNativeTarget "String to CSV Extension (iOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV.Extension;
+				PRODUCT_NAME = "String to CSV Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B74FB26030901E3E008FFB67 /* Release configuration for PBXNativeTarget "String to CSV Extension (iOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV.Extension;
+				PRODUCT_NAME = "String to CSV Extension";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B74FB26330901E3E008FFB67 /* Debug configuration for PBXNativeTarget "String to CSV (iOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV;
+				PRODUCT_NAME = "String to CSV";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		B74FB26430901E3E008FFB67 /* Release configuration for PBXNativeTarget "String to CSV (iOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "iOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV;
+				PRODUCT_NAME = "String to CSV";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B74FB26630901E3E008FFB67 /* Debug configuration for PBXNativeTarget "String to CSV Extension (macOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV.Extension;
+				PRODUCT_NAME = "String to CSV Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B74FB26730901E3E008FFB67 /* Release configuration for PBXNativeTarget "String to CSV Extension (macOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (Extension)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV.Extension;
+				PRODUCT_NAME = "String to CSV Extension";
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		B74FB26A30901E3E008FFB67 /* Debug configuration for PBXNativeTarget "String to CSV (macOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV;
+				PRODUCT_NAME = "String to CSV";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		B74FB26B30901E3E008FFB67 /* Release configuration for PBXNativeTarget "String to CSV (macOS)" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "macOS (App)/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "String to CSV";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.lkusam.StringToCSV;
+				PRODUCT_NAME = "String to CSV";
+				REGISTER_APP_GROUPS = YES;
+				SDKROOT = macosx;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B74FB21030901E3D008FFB67 /* Build configuration list for PBXProject "String to CSV" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B74FB25C30901E3E008FFB67 /* Debug configuration for PBXProject "String to CSV" */,
+				B74FB25D30901E3E008FFB67 /* Release configuration for PBXProject "String to CSV" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		B74FB25E30901E3E008FFB67 /* Build configuration list for PBXNativeTarget "String to CSV Extension (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B74FB25F30901E3E008FFB67 /* Debug configuration for PBXNativeTarget "String to CSV Extension (iOS)" */,
+				B74FB26030901E3E008FFB67 /* Release configuration for PBXNativeTarget "String to CSV Extension (iOS)" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		B74FB26230901E3E008FFB67 /* Build configuration list for PBXNativeTarget "String to CSV (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B74FB26330901E3E008FFB67 /* Debug configuration for PBXNativeTarget "String to CSV (iOS)" */,
+				B74FB26430901E3E008FFB67 /* Release configuration for PBXNativeTarget "String to CSV (iOS)" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		B74FB26530901E3E008FFB67 /* Build configuration list for PBXNativeTarget "String to CSV Extension (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B74FB26630901E3E008FFB67 /* Debug configuration for PBXNativeTarget "String to CSV Extension (macOS)" */,
+				B74FB26730901E3E008FFB67 /* Release configuration for PBXNativeTarget "String to CSV Extension (macOS)" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		B74FB26930901E3E008FFB67 /* Build configuration list for PBXNativeTarget "String to CSV (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B74FB26A30901E3E008FFB67 /* Debug configuration for PBXNativeTarget "String to CSV (macOS)" */,
+				B74FB26B30901E3E008FFB67 /* Release configuration for PBXNativeTarget "String to CSV (macOS)" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B74FB20D30901E3D008FFB67 /* Project object */;
+	validationLevel = 1;
+}

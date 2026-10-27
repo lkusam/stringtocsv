@@ -10,6 +10,8 @@ on:
       - "index.html"
       - "scripts.js"
       - "styles.css"
+      - "icons/**"
+      - "vendor/**"
 
 permissions:
   contents: write
@@ -17,6 +19,8 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    env:
+      AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
 
     steps:
       - name: Checkout code
@@ -42,15 +46,7 @@ jobs:
 
       - name: Package Extension
         run: |
-          # Create dist directory
-          mkdir -p dist
-
-          # Copy extension files (excluding development files)
-          cp manifest.json dist/
-          cp index.html dist/
-          cp scripts.js dist/
-          cp styles.css dist/
-          cp README.md dist/
+          ./build.sh
 
           # Create the zip file
           cd dist
@@ -59,6 +55,12 @@ jobs:
 
           # Also create a generic name for latest release
           cp string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip string-to-csv-converter-latest.zip
+
+      - name: Lint and build Firefox add-on
+        run: |
+          npx --yes web-ext@8 lint --source-dir dist --self-hosted=false
+          npx --yes web-ext@8 build --source-dir dist --artifacts-dir web-ext-artifacts \
+            --filename string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip
 
       - name: Generate Release Notes
         id: release_notes
@@ -109,6 +111,7 @@ jobs:
           files: |
             string-to-csv-converter-v${{ steps.manifest_version.outputs.version }}.zip
             string-to-csv-converter-latest.zip
+            web-ext-artifacts/string-to-csv-converter-firefox-v${{ steps.manifest_version.outputs.version }}.zip
 
       - name: Upload to Chrome Web Store (Optional)
         if: steps.check_tag.outputs.tag_exists == 'false'
@@ -122,6 +125,14 @@ jobs:
           publish: true
         env:
           CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+
+      - name: Submit to Firefox Add-ons (Optional)
+        if: steps.check_tag.outputs.tag_exists == 'false' && env.AMO_JWT_ISSUER != ''
+        run: |
+          npx --yes web-ext@8 sign --source-dir dist --channel listed \
+            --api-key "$AMO_JWT_ISSUER" --api-secret "$AMO_JWT_SECRET"
+        env:
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
 
       - name: Output Results
         run: |

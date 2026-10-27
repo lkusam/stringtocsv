@@ -92,6 +92,14 @@ To install this extension locally for development:
 5.  Select the directory where you cloned or downloaded the extension files.
 6.  The "String to CSV Converter" extension should now appear in your list of extensions and be ready to use.
 
+### Building for Chrome, Firefox and Safari
+
+Run `./build.sh` to assemble the shippable extension into `dist/`. Every browser target packages from that folder.
+
+- **Chrome / Edge**: load `dist/` unpacked, or zip it for the Chrome Web Store.
+- **Firefox** (and LibreWolf, Zen, Waterfox, Floorp): `npx web-ext lint --source-dir dist`, then `npx web-ext run --source-dir dist` to try it, or `npx web-ext build --source-dir dist` to produce the upload zip for addons.mozilla.org.
+- **Safari** (macOS and iOS): run `./build.sh`, then open `safari/String to CSV/String to CSV.xcodeproj` in Xcode. The project references the files in `dist/`, so rebuild `dist/` before archiving. Set your signing team, then Product → Archive to upload to App Store Connect.
+
 ## Technical Details
 
 ### Browser Compatibility
