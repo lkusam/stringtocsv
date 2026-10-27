@@ -98,7 +98,45 @@ Run `./build.sh` to assemble the shippable extension into `dist/`. Every browser
 
 - **Chrome / Edge**: load `dist/` unpacked, or zip it for the Chrome Web Store.
 - **Firefox** (and LibreWolf, Zen, Waterfox, Floorp): `npx web-ext lint --source-dir dist`, then `npx web-ext run --source-dir dist` to try it, or `npx web-ext build --source-dir dist` to produce the upload zip for addons.mozilla.org.
-- **Safari** (macOS and iOS): run `./build.sh`, then open `safari/String to CSV/String to CSV.xcodeproj` in Xcode. The project references the files in `dist/`, so rebuild `dist/` before archiving. Set your signing team, then Product → Archive to upload to App Store Connect.
+- **Safari** (macOS and iOS): run `./build.sh`, then open `safari/String to CSV/String to CSV.xcodeproj` in Xcode. The project references the files in `dist/`, so rebuild `dist/` before archiving.
+
+## Releasing
+
+### Chrome and Firefox (automatic)
+
+1. Bump `version` in `manifest.json` and merge to `main`.
+2. The **Publish Extension** workflow builds `dist/`, creates a GitHub release `v<version>` with the Chrome and Firefox zips, uploads to the Chrome Web Store, and submits to addons.mozilla.org.
+3. If a store upload fails, fix the cause, then run the workflow manually (Actions → Publish Extension → Run workflow) with **republish** ticked. That re-sends the current version to the stores without recreating the release.
+
+Required repository secrets:
+
+| Secret | Where to get it |
+| --- | --- |
+| `CHROME_EXTENSION_ID` | Chrome Web Store Developer Dashboard → the item's ID |
+| `CHROME_PUBLISHER_ID` | Developer Dashboard → Publisher → Settings |
+| `CHROME_CLIENT_ID`, `CHROME_CLIENT_SECRET` | Google Cloud Console → APIs & Services → Credentials → OAuth client |
+| `CHROME_REFRESH_TOKEN` | OAuth consent for scope `https://www.googleapis.com/auth/chromewebstore` with the client above. Keep the OAuth app's publishing status **In production**; tokens from apps in **Testing** expire after 7 days. |
+| `AMO_JWT_ISSUER`, `AMO_JWT_SECRET` | addons.mozilla.org → Developer Hub → Manage API Keys. Without them the Firefox upload is skipped. |
+
+Every pull request also runs **Check Extension Builds**, which lints the Firefox build.
+
+### Safari (manual)
+
+Safari isn't built in CI. Each release is archived and uploaded from Xcode on a Mac.
+
+One-time setup:
+
+1. Join the Apple Developer Program.
+2. In App Store Connect, create a new app for macOS and iOS with bundle ID `com.lkusam.StringToCSV`. Register `com.lkusam.StringToCSV` and `com.lkusam.StringToCSV.Extension` under Certificates, Identifiers & Profiles if they aren't offered.
+3. Open the Xcode project and, under Signing & Capabilities, select your team for all four targets.
+
+For each release:
+
+1. Merge the version bump to `main` and pull it, then run `./build.sh`.
+2. In Xcode, set **Version** (MARKETING_VERSION) to the manifest version on all four targets. Increase **Build** (CURRENT_PROJECT_VERSION) on all four targets; every upload needs a new build number.
+3. Select the **String to CSV (macOS)** scheme, run **Product → Archive**, then in the Organizer choose **Distribute App → App Store Connect → Upload**.
+4. Repeat with the **String to CSV (iOS)** scheme and the **Any iOS Device** destination.
+5. In App Store Connect, complete the listing (screenshots, description, support URL, privacy policy `https://lkusam.github.io/stringtocsv/privacy.html`, App Privacy: Data Not Collected), select the uploaded build, and **Submit for Review**.
 
 ## Technical Details
 
